@@ -20,7 +20,7 @@ public enum TokenType {
     PLUS, MINUS, MULTIPLY, DIVIDE,
     AND, OR,
 
-    CONST_INT, CONST_STRING,
+
 
     //GRA
     START_GAME, END_GAME, FIND_WINNER,
@@ -28,5 +28,5 @@ public enum TokenType {
 
     //PLAYER
     JOIN_GAME, LEAVE_GAME,
-    BALANCE, STRING_INST, INT_INST, NAME
+    BALANCE, CONST_STRING, CONST_INT, NAME
 }

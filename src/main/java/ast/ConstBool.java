@@ -19,5 +19,6 @@ public class ConstBool extends ConstValue {
     @Override
     public Variable execute() {
 
+        return null;
     }
 }

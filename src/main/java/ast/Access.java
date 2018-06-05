@@ -18,6 +18,7 @@ public class Access extends Instruction {
     public Variable execute() {
         //if right -> embededVar do find left in app scope, then get right name
         //if right -> embededFun do execute
+        System.out.println("Access");
         return null;
     }
 }

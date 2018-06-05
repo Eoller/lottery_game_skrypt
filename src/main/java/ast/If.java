@@ -18,6 +18,8 @@ public class If extends Instruction {
 
     @Override
     public Variable execute() {
+        body.executeProgram();
+        System.out.println("If");
         return null;
     }
 }

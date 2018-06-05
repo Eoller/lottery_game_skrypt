@@ -1,9 +1,11 @@
 package lexer;
 
+import ast.Program;
 import model.Token;
 import model.TokenType;
 import org.junit.After;
 import org.junit.Test;
+import parser.Parser;
 
 import java.io.File;
 import java.io.FileReader;
@@ -40,6 +42,22 @@ public class TokenizerTest {
         assertEquals("game1", nextToken.getValue());
     }
 
+    @Test
+    public void randomTest() throws Exception {
+        tokenizer = new Tokenizer(createFileWithString("if(true){" +
+                "int a = 5 + 10" +
+                "Game a(12,15,20)" +
+                "Player b(" + '"' + "Hello" + '"' + ", 500)" +
+                "}" +
+                "while(true){" +
+                "bool isTrue = false" +
+                "}" +
+                "$"));
+        Parser parser = new Parser(tokenizer);
+        Program parse = parser.parse();
+        parse.executeProgram();
+    }
+
     private File createFileWithString(String data) {
         try {
             file = new File("Example.txt");
@@ -66,7 +84,7 @@ public class TokenizerTest {
     @Test
     public void shouldGetStringSymbols(){
         tokenizer = new Tokenizer(createFileWithString("somestring"));
-        assertEquals(new Token(TokenType.STRING_INST, "somestring").getValue(), tokenizer.nextToken().getValue());
+        assertEquals(new Token(TokenType.CONST_STRING, "somestring").getValue(), tokenizer.nextToken().getValue());
     }
 
     @Test

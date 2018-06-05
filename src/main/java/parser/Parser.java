@@ -8,6 +8,8 @@ import model.TokenType;
 import java.util.ArrayList;
 import java.util.List;
 
+import static model.TokenType.*;
+
 /**
  * Created by Eoller on 03-Jun-18.
  */
@@ -33,24 +35,112 @@ public class Parser {
     }
 
     private Instruction parseInstruction() throws Exception {
-        if(current.getType().equals(TokenType.INT_TYPE /*секвенция или*/)){
+        if(isAcceptable(INT_TYPE, TokenType.STRING_TYPE,TokenType.BOOL_TYPE,
+                TokenType.GAME_TYPE, TokenType.PLAYER_TYPE)){ //TODO
             return parseVariableDefinition();
         }
 
         switch (current.getType()) {
             case IF:
                 return parseIf();
-            case :
-                return
+            case WHILE:
+                return parseWhile();
+            /*case IDENTIFIER:
+                return parseEmdedVarInitializationOrEmbededFunctionCall();*/
             default:
                 throw new RuntimeException(createErrorMessage(TokenType.IF, TokenType.IDENTIFIER, TokenType.WHILE));
         }
     }
 
-    private Instruction parseVariableDefinition() {
+    private Instruction parseWhile() throws Exception {
+        accept(TokenType.WHILE);
+        accept(TokenType.OPEN_BRACE);
 
+        Node expression = parseExpression();
+
+        accept(TokenType.CLOSED_BRACE);
+
+        return new While(expression, parseInstructionBlock());
+    }
+
+    private Instruction parseVariableDefinition() throws Exception {
+        switch (current.getType()){
+            case INT_TYPE:
+                return parsePrimitiveDefinition();
+            case STRING_TYPE:
+                return parsePrimitiveDefinition();
+            case BOOL_TYPE:
+                return parsePrimitiveDefinition();
+            case GAME_TYPE:
+                return parseGameTypeDefinition();
+            case PLAYER_TYPE:
+                return parsePlayerTypeDefinition();
+        }
 
         return null;
+    }
+
+    private Instruction parseGameTypeDefinition() throws Exception {
+        VariableType variableType = parseType(current);
+        accept(TokenType.GAME_TYPE);
+        Identifier identifier = new Identifier(current.getValue());
+        accept(TokenType.IDENTIFIER);
+        accept(TokenType.OPEN_BRACE);
+        int player_count = Integer.parseInt(current.getValue());
+        accept(TokenType.CONST_INT);
+        accept(TokenType.COMMA);
+        int bank = Integer.parseInt(current.getValue());
+        accept(TokenType.CONST_INT);
+        accept(TokenType.COMMA);
+        int status = Integer.parseInt(current.getValue());
+        accept(TokenType.CONST_INT);
+        accept(TokenType.CLOSED_BRACE);
+        return new GameDefinition(identifier.getName(), variableType, bank, status, player_count);
+    }
+
+    private Instruction parsePlayerTypeDefinition() throws Exception {
+        VariableType variableType = parseType(current);
+        accept(TokenType.PLAYER_TYPE);
+        Identifier identifier = new Identifier(current.getValue());
+        accept(TokenType.IDENTIFIER);
+        accept(TokenType.OPEN_BRACE);
+        String player_name = current.getValue();
+        accept(TokenType.CONST_STRING);
+        accept(TokenType.COMMA);
+        int balance = Integer.parseInt(current.getValue());
+        accept(TokenType.CONST_INT);
+        accept(TokenType.CLOSED_BRACE);
+        return new PlayerDefinition(identifier.getName(), variableType, player_name, balance);
+    }
+
+    private Instruction parsePrimitiveDefinition() throws Exception {
+        VariableType variableType = parseType(current);
+        accept(TokenType.INT_TYPE, TokenType.STRING_TYPE, TokenType.BOOL_TYPE);
+        Identifier identifier = new Identifier(current.getValue());
+        accept(TokenType.IDENTIFIER);
+        return new PrimitiveDefinition(variableType, identifier.getName(), parseAssignment(identifier));
+    }
+
+    private Node parseAssignment(Identifier identifier) throws Exception {
+        accept(TokenType.ASSIGN_OP);
+        return new Assignment(parseExpression(), identifier);
+    }
+
+    private VariableType parseType(Token token) throws Exception {
+        switch (token.getType()) {
+            case INT_TYPE:
+                return VariableType.INT;
+            case STRING_TYPE:
+                return VariableType.STRING;
+            case BOOL_TYPE:
+                return VariableType.BOOL;
+            case GAME_TYPE:
+                return VariableType.GAME;
+            case PLAYER_TYPE:
+                return VariableType.PLAYER;
+            default:
+                throw new RuntimeException(createErrorMessage(TokenType.INT_TYPE, TokenType.STRING_TYPE, TokenType.BOOL_TYPE, TokenType.PLAYER_TYPE, TokenType.GAME_TYPE));
+        }
     }
 
     private Instruction parseIf() throws Exception {
@@ -205,6 +295,7 @@ public class Parser {
         switch (current.getType()){
             case CONST_INT:
                 String value = current.getValue();
+                accept(TokenType.CONST_INT);
                 return new ConstInt(Integer.parseInt(value));
             case CONST_BOOL:
                 ConstBool bool = new ConstBool((current.getValue().equals("true")));

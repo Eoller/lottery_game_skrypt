@@ -32,6 +32,7 @@ public class Expression extends Node {
 
     @Override
     public Variable execute() {
+        System.out.println("Expression");
         return null;
     }
 }

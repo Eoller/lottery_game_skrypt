@@ -19,7 +19,7 @@ public class EmbededFunctionCall extends Node {
     @Override
     public Variable execute() {
         //if name
-
+        System.out.println("EmbededFunctionCall");
         return null;
     }
 }

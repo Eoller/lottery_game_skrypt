@@ -56,7 +56,7 @@ public class Tokenizer {
             out.append(scanner.getNextChar());
         }
 
-        return new Token(TokenType.INT_INST, out.toString());
+        return new Token(TokenType.CONST_INT, out.toString());
     }
 
     private Token tryToParseIdentifierOrKeyword(char currentSymbol){
@@ -125,7 +125,7 @@ public class Tokenizer {
             out.append(scanner.getNextChar());
         }
 
-        return new Token(TokenType.STRING_INST, out.toString());
+        return new Token(TokenType.CONST_STRING, out.toString());
     }
 
     private Token endOfFile(){
@@ -137,6 +137,7 @@ public class Tokenizer {
     }
 
     private void initEmbededWords() {
+        embededWords.put("$", new Token(TokenType.EOF, "$"));
         embededWords.put("Game", new Token(TokenType.GAME_TYPE, "Game"));
         embededWords.put("int", new Token(TokenType.INT_TYPE, "int"));
         embededWords.put("bool", new Token(TokenType.BOOL_TYPE, "bool"));

@@ -5,18 +5,21 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+/**
+ * Created by Eoller on 05-Jun-18.
+ */
 @Getter
 @Setter
-@NoArgsConstructor
 @AllArgsConstructor
-public class EmbededVar extends Node {
+@NoArgsConstructor
+public class Assignment extends Instruction {
 
-    private String name;
+    private Node expression;
+    private Identifier identifier;
 
     @Override
     public Variable execute() {
-        //return just name
-        System.out.println("EmbededVar");
+        System.out.println("Assignment");
         return null;
     }
 }

@@ -5,18 +5,22 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Getter
+/**
+ * Created by Eoller on 05-Jun-18.
+ */
 @Setter
+@Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class EmbededVar extends Node {
+public class While extends Instruction {
 
-    private String name;
+    private Node expression;
+    private Program body;
 
     @Override
     public Variable execute() {
-        //return just name
-        System.out.println("EmbededVar");
+        System.out.println("While");
+        body.executeProgram();
         return null;
     }
 }
