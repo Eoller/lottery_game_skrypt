@@ -17,7 +17,7 @@ public class ConstBool extends ConstValue {
     private boolean value;
 
     @Override
-    public void execute() {
+    public Variable execute() {
 
     }
 }

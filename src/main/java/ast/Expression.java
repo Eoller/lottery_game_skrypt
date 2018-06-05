@@ -31,7 +31,7 @@ public class Expression extends Node {
 
 
     @Override
-    public void execute() {
-
+    public Variable execute() {
+        return null;
     }
 }

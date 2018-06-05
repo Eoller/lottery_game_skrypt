@@ -15,7 +15,9 @@ public class Access extends Instruction {
     private Node right;
 
     @Override
-    public void execute() {
-
+    public Variable execute() {
+        //if right -> embededVar do find left in app scope, then get right name
+        //if right -> embededFun do execute
+        return null;
     }
 }

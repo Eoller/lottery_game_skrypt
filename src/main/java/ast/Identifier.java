@@ -17,7 +17,8 @@ public class Identifier extends Node {
     private String name;
 
     @Override
-    public void execute() {
-
+    public Variable execute() {
+        //finding this name in app scope , then return new variable
+        return null;
     }
 }

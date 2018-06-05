@@ -17,7 +17,7 @@ public class ConstInt extends ConstValue {
     private int value;
 
     @Override
-    public void execute() {
-
+    public Variable execute() {
+        return null;
     }
 }

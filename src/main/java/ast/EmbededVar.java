@@ -5,19 +5,17 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-/**
- * Created by Eoller on 04-Jun-18.
- */
-@NoArgsConstructor
-@AllArgsConstructor
 @Getter
 @Setter
-public class ConstString extends ConstValue {
+@NoArgsConstructor
+@AllArgsConstructor
+public class EmbededVar extends Node {
 
-    private String value;
+    private String name;
 
     @Override
     public Variable execute() {
+        //return just name
         return null;
     }
 }
