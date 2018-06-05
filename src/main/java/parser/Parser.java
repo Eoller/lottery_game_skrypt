@@ -45,8 +45,8 @@ public class Parser {
                 return parseIf();
             case WHILE:
                 return parseWhile();
-            /*case IDENTIFIER:
-                return parseEmdedVarInitializationOrEmbededFunctionCall();*/
+            case IDENTIFIER:
+                //return parseEmdedVarInitializationOrEmbededFunctionCall(); //TODO
             default:
                 throw new RuntimeException(createErrorMessage(TokenType.IF, TokenType.IDENTIFIER, TokenType.WHILE));
         }
