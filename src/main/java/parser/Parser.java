@@ -134,6 +134,10 @@ public class Parser {
             return node;
     }
 
+    private Instruction parseAccess(Node from) throws Exception {
+        accept(TokenType.PERIOD);
+    }
+
     private Node parseConstValue() throws Exception {
         switch (current.getType()){
             case CONST_INT:
