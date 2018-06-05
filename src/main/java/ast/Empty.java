@@ -12,7 +12,7 @@ public class Empty extends Instruction {
     }
 
     @Override
-    public void execute() {
-
+    public Variable execute() {
+        return null;
     }
 }

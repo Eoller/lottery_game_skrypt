@@ -17,7 +17,7 @@ public class If extends Instruction {
     private Else elseBlock;
 
     @Override
-    public void execute() {
-
+    public Variable execute() {
+        return null;
     }
 }

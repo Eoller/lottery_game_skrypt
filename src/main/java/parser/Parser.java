@@ -5,7 +5,8 @@ import lexer.Tokenizer;
 import model.Token;
 import model.TokenType;
 
-import javax.xml.bind.Element;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Eoller on 03-Jun-18.
@@ -19,7 +20,7 @@ public class Parser {
         current = lexer.nextToken();
     }
 
-    public Program parse() {
+    public Program parse() throws Exception {
         Program program = new Program();
 
         Instruction lastParsedInstruction;
@@ -32,13 +33,24 @@ public class Parser {
     }
 
     private Instruction parseInstruction() throws Exception {
-        switch (current.getType()) {
+        if(current.getType().equals(TokenType.INT_TYPE /*секвенция или*/)){
+            return parseVariableDefinition();
+        }
 
+        switch (current.getType()) {
             case IF:
                 return parseIf();
+            case :
+                return
             default:
                 throw new RuntimeException(createErrorMessage(TokenType.IF, TokenType.IDENTIFIER, TokenType.WHILE));
         }
+    }
+
+    private Instruction parseVariableDefinition() {
+
+
+        return null;
     }
 
     private Instruction parseIf() throws Exception {
@@ -132,6 +144,61 @@ public class Parser {
             return parseAccess(node);
         else
             return node;
+    }
+
+    private Instruction parseAccess(Node from) throws Exception {
+        accept(TokenType.PERIOD);
+        Node identifier = parseEmdedVarOrEmbededFunctionCall(); //тут должно быть что-то что вернёт либо
+        // ембедед вар с екзекутом который потом будем использовать в Access, либо
+        // ембедед функцию с екзекутом результат которой потом будем использовать в Access
+
+        Instruction fromAccess = new Access(from, identifier);
+        return fromAccess;
+    }
+
+    private Node parseEmdedVarOrEmbededFunctionCall() throws Exception {
+        String name = current.getValue();
+        Node node;
+        accept(TokenType.BALANCE, TokenType.BANK, TokenType.FIND_WINNER,TokenType.GAME_TYPE, TokenType.GAME_TYPE,
+                TokenType.END_GAME, TokenType.JOIN_GAME, TokenType.LEAVE_GAME,
+                TokenType.NAME, TokenType.START_GAME, TokenType.STATUS, TokenType.WINER);
+        if(current.getType() == TokenType.OPEN_BRACE){
+            node = new EmbededFunctionCall(parseFunctionCallArguments(), name);
+            return node;
+        }
+        node = new EmbededVar(name);
+        return node;
+
+    }
+
+    private List<Node> parseFunctionCallArguments() throws Exception {
+        ArrayList<Node> args = new ArrayList<>();
+        accept(TokenType.OPEN_BRACE);
+        while (current.getType() != TokenType.EOF) {
+            Node arg;
+            if (current.getType() == TokenType.CLOSED_BRACE) {
+                accept(TokenType.CLOSED_BRACE);
+                return args;
+            } else {
+                arg = parseExpression();
+            }
+            args.add(arg);
+            if (parseEndOfArgsOfComma())
+                return args;
+        }
+        return args;
+    }
+
+    private boolean parseEndOfArgsOfComma() throws Exception {
+        if(current.getType() == TokenType.COMMA){
+            accept(TokenType.COMMA);
+        }else if(current.getType() == TokenType.CLOSED_BRACE){
+            accept(TokenType.CLOSED_BRACE);
+            return true;
+        }else{
+            accept(TokenType.COMMA, TokenType.CLOSED_BRACE);
+        }
+        return false;
     }
 
     private Node parseConstValue() throws Exception {
