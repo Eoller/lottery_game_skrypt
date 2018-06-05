@@ -1,9 +1,8 @@
 package lexer;
 
 import model.Token;
-import model.Type;
+import model.TokenType;
 import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 
 import java.io.File;
@@ -29,16 +28,16 @@ public class TokenizerTest {
     @Test
     public void shouldGetGameToken(){
         tokenizer = new Tokenizer(createFileWithString("Game game1;"));
-        assertEquals(Tokenizer.embededWords.get("Game"), tokenizer.getNextToken());
+        assertEquals(Tokenizer.embededWords.get("Game"), tokenizer.nextToken());
     }
 
 
     @Test
     public void shouldGetIdentifierToken(){
         tokenizer = new Tokenizer(createFileWithString("game1;"));
-        Token nextToken = tokenizer.getNextToken();
-        assertEquals(Type.IDENTIFIER, nextToken.getType());
-        assertEquals("game1", nextToken.getRepr());
+        Token nextToken = tokenizer.nextToken();
+        assertEquals(TokenType.IDENTIFIER, nextToken.getType());
+        assertEquals("game1", nextToken.getValue());
     }
 
     private File createFileWithString(String data) {
@@ -56,9 +55,9 @@ public class TokenizerTest {
     @Test
     public void shouldGetCharSymbols(){
         tokenizer = new Tokenizer(createFileWithString(".,;"));
-        Token nextToken = tokenizer.getNextToken();
-        Token nextToken1 = tokenizer.getNextToken();
-        Token nextToken2 = tokenizer.getNextToken();
+        Token nextToken = tokenizer.nextToken();
+        Token nextToken1 = tokenizer.nextToken();
+        Token nextToken2 = tokenizer.nextToken();
         assertEquals(Tokenizer.embededWords.get("."), nextToken);
         assertEquals(Tokenizer.embededWords.get(","), nextToken1 );
         assertEquals(Tokenizer.embededWords.get(";"), nextToken2);
@@ -67,16 +66,16 @@ public class TokenizerTest {
     @Test
     public void shouldGetStringSymbols(){
         tokenizer = new Tokenizer(createFileWithString("somestring"));
-        assertEquals(new Token(Type.STRING_INST, "somestring").getRepr(), tokenizer.getNextToken().getRepr());
+        assertEquals(new Token(TokenType.STRING_INST, "somestring").getValue(), tokenizer.nextToken().getValue());
     }
 
     @Test
     public void shouldGetArithmeticsOperator(){
         tokenizer = new Tokenizer(createFileWithString("+-*/"));
-        Token nextToken = tokenizer.getNextToken();
-        Token nextToken1 = tokenizer.getNextToken();
-        Token nextToken2 = tokenizer.getNextToken();
-        Token nextToken3 = tokenizer.getNextToken();
+        Token nextToken = tokenizer.nextToken();
+        Token nextToken1 = tokenizer.nextToken();
+        Token nextToken2 = tokenizer.nextToken();
+        Token nextToken3 = tokenizer.nextToken();
         assertEquals(Tokenizer.embededWords.get("+"), nextToken);
         assertEquals(Tokenizer.embededWords.get("-"), nextToken1);
         assertEquals(Tokenizer.embededWords.get("*"), nextToken2);

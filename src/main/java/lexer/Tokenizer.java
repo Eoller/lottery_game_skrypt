@@ -3,7 +3,7 @@ package lexer;
 import file.FileScanner;
 import file.Scanner;
 import model.Token;
-import model.Type;
+import model.TokenType;
 
 import java.io.File;
 import java.util.HashMap;
@@ -19,7 +19,7 @@ public class Tokenizer {
         initEmbededWords();
     }
 
-    public Token getNextToken(){
+    public Token nextToken(){
         //TODO empty input exeption; [QUESTION] WHERE DO I NEED TO CHECK EMPTY INPUT
         char curr = scanner.getNextChar();
         while (Character.isWhitespace(curr) && !scanner.isFinished()){
@@ -56,7 +56,7 @@ public class Tokenizer {
             out.append(scanner.getNextChar());
         }
 
-        return new Token(Type.INT_INST, out.toString());
+        return new Token(TokenType.INT_INST, out.toString());
     }
 
     private Token tryToParseIdentifierOrKeyword(char currentSymbol){
@@ -70,7 +70,7 @@ public class Tokenizer {
         if(embededWords.containsKey(parsed)){
             return embededWords.get(parsed);
         }
-        return new Token(Type.IDENTIFIER, parsed);
+        return new Token(TokenType.IDENTIFIER, parsed);
     }
 
     private Token tryToParseComparisonOperator(char currentSymbol){
@@ -125,69 +125,68 @@ public class Tokenizer {
             out.append(scanner.getNextChar());
         }
 
-        return new Token(Type.STRING_INST, out.toString());
+        return new Token(TokenType.STRING_INST, out.toString());
     }
 
     private Token endOfFile(){
-        return new Token(Type.END_OF_FILE, "end of file");
+        return new Token(TokenType.EOF, "end of file");
     }
 
     private Token error(char currentChar){
-        return new Token(Type.EMPTY, "Unexpected char"); //TODO refactor method
+        return new Token(TokenType.EMPTY, "Unexpected char"); //TODO refactor method
     }
 
     private void initEmbededWords() {
-        embededWords.put("Game", new Token(Type.GAME, "Game"));
-        embededWords.put("int", new Token(Type.INT, "int"));
-        embededWords.put("bool", new Token(Type.BOOL, "bool"));
-        embededWords.put("Player", new Token(Type.PLAYER, "Player"));
-        embededWords.put("String", new Token(Type.STRING, "String"));
-        embededWords.put("if", new Token(Type.IF, "if"));
-        embededWords.put("else", new Token(Type.ELSE, "else"));
-        embededWords.put("=", new Token(Type.EQUALLY, "="));
-        embededWords.put("true", new Token(Type.BOOL_INST, "true"));
-        embededWords.put("false", new Token(Type.BOOL_INST, "false"));
-        embededWords.put(".", new Token(Type.DOT, "."));
-        embededWords.put(",", new Token(Type.COMMA , ","));
-        embededWords.put(";", new Token(Type.SEMICOLON , ";"));
-        embededWords.put("wait", new Token(Type.WAIT, "wait"));
-        embededWords.put("while", new Token(Type.WHILE, "while"));
+        embededWords.put("Game", new Token(TokenType.GAME_TYPE, "Game"));
+        embededWords.put("int", new Token(TokenType.INT_TYPE, "int"));
+        embededWords.put("bool", new Token(TokenType.BOOL_TYPE, "bool"));
+        embededWords.put("Player", new Token(TokenType.PLAYER_TYPE, "Player"));
+        embededWords.put("String", new Token(TokenType.STRING_TYPE, "String"));
+        embededWords.put("if", new Token(TokenType.IF, "if"));
+        embededWords.put("else", new Token(TokenType.ELSE, "else"));
+        embededWords.put("=", new Token(TokenType.ASSIGN_OP, "="));
+        embededWords.put("true", new Token(TokenType.CONST_BOOL, "true"));
+        embededWords.put("false", new Token(TokenType.CONST_BOOL, "false"));
+        embededWords.put(".", new Token(TokenType.PERIOD, "."));
+        embededWords.put(",", new Token(TokenType.COMMA , ","));
+        embededWords.put(";", new Token(TokenType.SEMICOLON , ";"));
+        embededWords.put("while", new Token(TokenType.WHILE, "while"));
 
-        embededWords.put("*", new Token(Type.ARITHMETIC_OPERATOR, "*"));
-        embededWords.put("/", new Token(Type.ARITHMETIC_OPERATOR, "/"));
-        embededWords.put("+", new Token(Type.ARITHMETIC_OPERATOR, "+"));
-        embededWords.put("-", new Token(Type.ARITHMETIC_OPERATOR, "-"));
+        embededWords.put("*", new Token(TokenType.MULTIPLY, "*"));
+        embededWords.put("/", new Token(TokenType.DIVIDE, "/"));
+        embededWords.put("+", new Token(TokenType.PLUS, "+"));
+        embededWords.put("-", new Token(TokenType.MINUS, "-"));
 
-        embededWords.put("(", new Token(Type.OPEN_BRACE, "("));
-        embededWords.put(")", new Token(Type.CLOSED_BRACE, ")"));
+        embededWords.put("(", new Token(TokenType.OPEN_BRACE, "("));
+        embededWords.put(")", new Token(TokenType.CLOSED_BRACE, ")"));
 
-        embededWords.put("{", new Token(Type.OPEN_CURLY_BRACE, "{"));
-        embededWords.put("}", new Token(Type.CLOSED_CURLY_BRACE, "}"));
+        embededWords.put("{", new Token(TokenType.OPEN_CURLY_BRACE, "{"));
+        embededWords.put("}", new Token(TokenType.CLOSED_CURLY_BRACE, "}"));
 
-        embededWords.put("!=", new Token(Type.RELATIONAL_OPERATOR, "!="));
-        embededWords.put("<", new Token(Type.RELATIONAL_OPERATOR, "<"));
-        embededWords.put(">", new Token(Type.RELATIONAL_OPERATOR, ">"));
-        embededWords.put("<=", new Token(Type.RELATIONAL_OPERATOR, "<="));
-        embededWords.put(">=", new Token(Type.RELATIONAL_OPERATOR, ">="));
-        embededWords.put("==", new Token(Type.RELATIONAL_OPERATOR, "=="));
+        embededWords.put("!=", new Token(TokenType.NOT_EQUAL, "!="));
+        embededWords.put("<", new Token(TokenType.LESS, "<"));
+        embededWords.put(">", new Token(TokenType.GREATER, ">"));
+        embededWords.put("<=", new Token(TokenType.LESS_EQUAL, "<="));
+        embededWords.put(">=", new Token(TokenType.GREATER_EQUAL, ">="));
+        embededWords.put("==", new Token(TokenType.EQUAL, "=="));
 
-        embededWords.put("&&", new Token(Type.LOGICAL_OPERATOR, "&&"));
-        embededWords.put("||", new Token(Type.LOGICAL_OPERATOR, "||"));
+        embededWords.put("&&", new Token(TokenType.AND, "&&"));
+        embededWords.put("||", new Token(TokenType.OR, "||"));
 
-        embededWords.put("status", new Token(Type.GAME_ATTR, "status"));
-        embededWords.put("player_count", new Token(Type.GAME_ATTR, "player_count"));
-        embededWords.put("bank", new Token(Type.GAME_ATTR, "bank"));
-        embededWords.put("winner", new Token(Type.GAME_ATTR, "winner"));
+        embededWords.put("status", new Token(TokenType.STATUS, "status"));
+        embededWords.put("player_count", new Token(TokenType.PLAYER_COUNT, "player_count"));
+        embededWords.put("bank", new Token(TokenType.BANK, "bank"));
+        embededWords.put("winner", new Token(TokenType.WINER, "winner"));
 
-        embededWords.put("name", new Token(Type.PLAYER_ATTR, "name"));
-        embededWords.put("balance", new Token(Type.PLAYER_ATTR, "balance"));
+        embededWords.put("name", new Token(TokenType.NAME, "name"));
+        embededWords.put("balance", new Token(TokenType.BALANCE, "balance"));
 
-        embededWords.put("join_game", new Token(Type.PLAYER_FUN, "join_game"));
-        embededWords.put("leave_game", new Token(Type.PLAYER_FUN, "leave_game"));
+        embededWords.put("join_game", new Token(TokenType.JOIN_GAME, "join_game"));
+        embededWords.put("leave_game", new Token(TokenType.LEAVE_GAME, "leave_game"));
 
-        embededWords.put("start_game", new Token(Type.GAME_FUN, "start_game"));
-        embededWords.put("end_game", new Token(Type.GAME_FUN, "end_game"));
-        embededWords.put("find_winner", new Token(Type.GAME_FUN, "find_winner"));
+        embededWords.put("start_game", new Token(TokenType.START_GAME, "start_game"));
+        embededWords.put("end_game", new Token(TokenType.END_GAME, "end_game"));
+        embededWords.put("find_winner", new Token(TokenType.FIND_WINNER, "find_winner"));
 
     }
 }

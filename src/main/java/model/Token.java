@@ -2,31 +2,31 @@ package model;
 
 public class Token {
 
-    private Type type;
-    private String repr;
+    private TokenType tokenType;
+    private String value;
     //[QUESTION] DO I NEED POS.col, POS.row
 
     public Token() {
     }
 
-    public Token(Type type, String repr) {
-        this.type = type;
-        this.repr = repr;
+    public Token(TokenType tokenType, String repr) {
+        this.tokenType = tokenType;
+        this.value = repr;
     }
 
-    public Type getType() {
-        return type;
+    public TokenType getType() {
+        return tokenType;
     }
 
-    public void setType(Type type) {
-        this.type = type;
+    public void setType(TokenType tokenType) {
+        this.tokenType = tokenType;
     }
 
-    public String getRepr() {
-        return repr;
+    public String getValue() {
+        return value;
     }
 
-    public void setRepr(String repr) {
-        this.repr = repr;
+    public void setValue(String value) {
+        this.value = value;
     }
 }
