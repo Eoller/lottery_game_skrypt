@@ -18,6 +18,6 @@ public class ConstString extends ConstValue {
 
     @Override
     public Variable execute() {
-        return null;
+        return new StringVariable(value);
     }
 }

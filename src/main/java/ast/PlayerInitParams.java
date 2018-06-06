@@ -5,19 +5,17 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-/**
- * Created by Eoller on 04-Jun-18.
- */
-@AllArgsConstructor
-@NoArgsConstructor
 @Getter
 @Setter
-public class ConstBool extends ConstValue {
+@NoArgsConstructor
+@AllArgsConstructor
+public class PlayerInitParams extends Node {
 
-    private boolean value;
+    private String playerName;
+    private int balance;
 
     @Override
     public Variable execute() {
-        return new BoolVariable(value);
+        return new PlayerVariable(playerName, balance);
     }
 }

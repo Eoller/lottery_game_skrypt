@@ -45,7 +45,8 @@ public class FileScanner implements Scanner {
         if(next == '\n'){
             rowPos++;
             colPos=0;
-            setUpNext();
+            //setUpNext();
+            current = next;
         }else {
             colPos++;
             current = next;

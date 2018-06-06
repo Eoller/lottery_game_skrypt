@@ -24,6 +24,15 @@ public class PrimitiveDefinition extends VariableDefinition {
 
     @Override
     public Variable execute() {
+        switch (variableType){
+            case INT:
+            case BOOL:
+            case STRING:
+                AppContext.addVariable(super.name, value.execute());
+                break;
+                default:
+                    throw new RuntimeException("Error: Expected primitive type");
+        }
         System.out.println("Primitive definition of ->" + name);
         return null;
     }

@@ -1,1 +1,0 @@
-if(true){int a = 5 + 10Game a(12,15,20)Player b("Hello", 500)}while(true){bool isTrue = false}$

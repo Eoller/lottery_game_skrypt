@@ -20,7 +20,6 @@ public class Tokenizer {
     }
 
     public Token nextToken(){
-        //TODO empty input exeption; [QUESTION] WHERE DO I NEED TO CHECK EMPTY INPUT
         char curr = scanner.getNextChar();
         while (Character.isWhitespace(curr) && !scanner.isFinished()){
             curr = scanner.getNextChar();
@@ -64,6 +63,10 @@ public class Tokenizer {
         stringBuilder.append(currentSymbol);
         while (Character.isLetter(scanner.showMeCurrentChar()) || Character.isDigit(scanner
                 .showMeCurrentChar()) && !scanner.isFinished()){
+            if(Character.compare(scanner.showMeCurrentChar(), '\n') == 0){
+                System.out.println("BIALY ZNAK");
+                break;
+            }
             stringBuilder.append(scanner.getNextChar());
         }
         String parsed = stringBuilder.toString();
@@ -175,19 +178,19 @@ public class Tokenizer {
         embededWords.put("||", new Token(TokenType.OR, "||"));
 
         embededWords.put("status", new Token(TokenType.STATUS, "status"));
-        embededWords.put("player_count", new Token(TokenType.PLAYER_COUNT, "player_count"));
+        embededWords.put("playerCount", new Token(TokenType.PLAYER_COUNT, "playerCount"));
         embededWords.put("bank", new Token(TokenType.BANK, "bank"));
         embededWords.put("winner", new Token(TokenType.WINER, "winner"));
 
         embededWords.put("name", new Token(TokenType.NAME, "name"));
         embededWords.put("balance", new Token(TokenType.BALANCE, "balance"));
 
-        embededWords.put("join_game", new Token(TokenType.JOIN_GAME, "join_game"));
-        embededWords.put("leave_game", new Token(TokenType.LEAVE_GAME, "leave_game"));
+        embededWords.put("joinGame", new Token(TokenType.JOIN_GAME, "joinGame"));
+        embededWords.put("leaveGame", new Token(TokenType.LEAVE_GAME, "leaveGame"));
 
-        embededWords.put("start_game", new Token(TokenType.START_GAME, "start_game"));
-        embededWords.put("end_game", new Token(TokenType.END_GAME, "end_game"));
-        embededWords.put("find_winner", new Token(TokenType.FIND_WINNER, "find_winner"));
+        embededWords.put("startGame", new Token(TokenType.START_GAME, "startGame"));
+        embededWords.put("endGame", new Token(TokenType.END_GAME, "endGame"));
+        embededWords.put("findWinner", new Token(TokenType.FIND_WINNER, "findWinner"));
 
     }
 }

@@ -9,7 +9,7 @@ import java.util.Map;
 public class AppContext {
     public final static Map<String, Variable> variables = new HashMap<>();
 
-    public boolean addVariable(String name, Variable variable){
+    public static boolean addVariable(String name, Variable variable){
         if(variables.containsKey(name)){
             return false;
         }else {
@@ -18,16 +18,19 @@ public class AppContext {
         }
     }
 
-    public void updateVariable(String name, Variable variable){
+    public static void updateVariable(String name, Variable variable){
         variables.replace(name, variable);
     }
 
-    public Variable getVariable(String name){
+    public static Variable getVariable(String name){
         return variables.get(name);
     }
 
-    public boolean containsIdentifier(String identifier) {
+    public static boolean containsVariable(String identifier) {
         return variables.containsKey(identifier);
     }
 
+    public static void printContext(){
+        variables.forEach((s, variable) -> System.out.println("[" + s +  "] --> value: (" + variable.toString() + "):" + variable.getType().name()));
+    }
 }

@@ -36,7 +36,7 @@ public class Parser {
 
     private Instruction parseInstruction() throws Exception {
         if(isAcceptable(INT_TYPE, TokenType.STRING_TYPE,TokenType.BOOL_TYPE,
-                TokenType.GAME_TYPE, TokenType.PLAYER_TYPE)){ //TODO
+                TokenType.GAME_TYPE, TokenType.PLAYER_TYPE)){
             return parseVariableDefinition();
         }
 
@@ -46,11 +46,31 @@ public class Parser {
             case WHILE:
                 return parseWhile();
             case IDENTIFIER:
-                //return parseEmdedVarInitializationOrEmbededFunctionCall(); //TODO
+                return parseVariableOperationOrEmdedVarInitializationOrEmbededFunctionCall();
             default:
                 throw new RuntimeException(createErrorMessage(TokenType.IF, TokenType.IDENTIFIER, TokenType.WHILE));
         }
     }
+
+    private Instruction parseVariableOperationOrEmdedVarInitializationOrEmbededFunctionCall() throws Exception {
+        Identifier identifier = new Identifier(current.getValue());
+        accept(TokenType.IDENTIFIER);
+        switch (current.getType()){
+            case PERIOD:
+                return parseAccess(identifier);
+            case ASSIGN_OP:
+                return parseAssignment(identifier);
+            case OPEN_BRACE:
+                return parseFunctionCall(identifier);
+                default:
+                    throw new RuntimeException(createErrorMessage(TokenType.PERIOD, TokenType.ASSIGN_OP));
+        }
+    }
+
+    private Instruction parseFunctionCall(Identifier identifier) throws Exception {
+        return new FunctionCall(parseFunctionCallArguments(), identifier);
+    }
+
 
     private Instruction parseWhile() throws Exception {
         accept(TokenType.WHILE);
@@ -85,6 +105,10 @@ public class Parser {
         accept(TokenType.GAME_TYPE);
         Identifier identifier = new Identifier(current.getValue());
         accept(TokenType.IDENTIFIER);
+        return new GameDefinition(identifier.getName(),variableType, parseGameInit(identifier));
+    }
+
+    private Node parseGameInit(Identifier identifier) throws Exception {
         accept(TokenType.OPEN_BRACE);
         int player_count = Integer.parseInt(current.getValue());
         accept(TokenType.CONST_INT);
@@ -95,7 +119,7 @@ public class Parser {
         int status = Integer.parseInt(current.getValue());
         accept(TokenType.CONST_INT);
         accept(TokenType.CLOSED_BRACE);
-        return new GameDefinition(identifier.getName(), variableType, bank, status, player_count);
+        return new GameInitParams(bank, player_count, status);
     }
 
     private Instruction parsePlayerTypeDefinition() throws Exception {
@@ -103,14 +127,18 @@ public class Parser {
         accept(TokenType.PLAYER_TYPE);
         Identifier identifier = new Identifier(current.getValue());
         accept(TokenType.IDENTIFIER);
+        return new PlayerDefinition(identifier.getName(), variableType, parsePlayerInit(identifier));
+    }
+
+    private Node parsePlayerInit(Identifier identifier) throws Exception {
         accept(TokenType.OPEN_BRACE);
-        String player_name = current.getValue();
+        String playerName = current.getValue();
         accept(TokenType.CONST_STRING);
         accept(TokenType.COMMA);
         int balance = Integer.parseInt(current.getValue());
         accept(TokenType.CONST_INT);
         accept(TokenType.CLOSED_BRACE);
-        return new PlayerDefinition(identifier.getName(), variableType, player_name, balance);
+        return new PlayerInitParams(playerName, balance);
     }
 
     private Instruction parsePrimitiveDefinition() throws Exception {
@@ -121,7 +149,7 @@ public class Parser {
         return new PrimitiveDefinition(variableType, identifier.getName(), parseAssignment(identifier));
     }
 
-    private Node parseAssignment(Identifier identifier) throws Exception {
+    private Instruction parseAssignment(Identifier identifier) throws Exception {
         accept(TokenType.ASSIGN_OP);
         return new Assignment(parseExpression(), identifier);
     }
@@ -273,13 +301,13 @@ public class Parser {
                 arg = parseExpression();
             }
             args.add(arg);
-            if (parseEndOfArgsOfComma())
+            if (parseEndOfArgsOrComma())
                 return args;
         }
         return args;
     }
 
-    private boolean parseEndOfArgsOfComma() throws Exception {
+    private boolean parseEndOfArgsOrComma() throws Exception {
         if(current.getType() == TokenType.COMMA){
             accept(TokenType.COMMA);
         }else if(current.getType() == TokenType.CLOSED_BRACE){

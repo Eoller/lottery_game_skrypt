@@ -18,7 +18,7 @@ public class If extends Instruction {
 
     @Override
     public Variable execute() {
-        body.executeProgram();
+        //boolean isTrue =
         System.out.println("If");
         return null;
     }

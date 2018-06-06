@@ -18,6 +18,6 @@ public class ConstInt extends ConstValue {
 
     @Override
     public Variable execute() {
-        return null;
+        return new IntegerVariable(value);
     }
 }

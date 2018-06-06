@@ -5,19 +5,19 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-/**
- * Created by Eoller on 04-Jun-18.
- */
-@AllArgsConstructor
-@NoArgsConstructor
+import java.util.List;
+
 @Getter
 @Setter
-public class ConstBool extends ConstValue {
+@AllArgsConstructor
+@NoArgsConstructor
+public class FunctionCall extends Instruction {
 
-    private boolean value;
+    private List<Node> args;
+    private Identifier identifier;
 
     @Override
     public Variable execute() {
-        return new BoolVariable(value);
+        return null;
     }
 }
