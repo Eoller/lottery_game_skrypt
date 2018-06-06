@@ -16,6 +16,9 @@ public class Access extends Instruction {
 
     @Override
     public Variable execute() {
+        Variable from = left.execute();
+
+
         //if right -> embededVar do find left in app scope, then get right name
         //if right -> embededFun do execute
         System.out.println("Access");

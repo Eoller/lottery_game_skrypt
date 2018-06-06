@@ -11,11 +11,19 @@ import lombok.Setter;
 @AllArgsConstructor
 public class PlayerInitParams extends Node {
 
-    private String playerName;
+    private Node playerName;
     private int balance;
 
     @Override
     public Variable execute() {
-        return new PlayerVariable(playerName, balance);
+        Variable variable = playerName.execute();
+        switch (variable.getType()){
+            case STRING:
+                StringVariable playerVariable = (StringVariable) variable;
+                return new PlayerVariable(playerVariable.toString(), balance);
+                default:
+                    throw new RuntimeException("Error. Bad argument in Player initialization");
+        }
+
     }
 }

@@ -29,7 +29,7 @@ public class PlayerDefinition extends VariableDefinition {
                 AppContext.addVariable(super.name, value.execute());
                 break;
             default:
-                throw new RuntimeException("Error: Expected primitive type");
+                throw new RuntimeException("Error: Expected non primitive type");
         }
         return null;
     }

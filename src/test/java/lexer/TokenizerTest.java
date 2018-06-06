@@ -58,11 +58,21 @@ public class TokenizerTest {
         tokenizer = new Tokenizer(createFileWithString("int a = 5\n" +
                 "int b = 10\n" +
                 "bool bol1 = true\n" +
-                "int f = 5\n" +
-                "String hello = \"hello world\"" +
-                "bol1 = false\n" +
-                "Game game1(5,5,5)" +
-                "Player player1(\"Dima\",500)" +
+                "bool bol2 = false\n" +
+                "String str = \"hello world\"\n" +
+                "Game game1(2,3,5)\n" +
+                "Player player1(\"Dima\",500)\n" +
+                "if(bol1){\n" +
+                "\tint lol = 55\n" +
+                "\tb = lol * 2\n" +
+                "}else{\n" +
+                "\tint j = 5 + 10*2\n" +
+                "}\n" +
+                "while(a >= 2){\n" +
+                "a = a - 1\n" +
+                "print(a)\n" +
+                "wait(5)\n" +
+                "}\n" +
                 "$"));
 
 

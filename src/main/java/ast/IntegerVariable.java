@@ -20,7 +20,17 @@ public class IntegerVariable extends Variable implements Comparable {
 
     @Override
     public int compare(Object object) {
-        return 0;
+        if (object instanceof IntegerVariable) {
+            IntegerVariable integerVariable = (IntegerVariable) object;
+
+            if (value > integerVariable.getValue())
+                return 1;
+            else if (value < integerVariable.getValue())
+                return -1;
+            else
+                return 0;
+        } else
+            throw new RuntimeException("Error. Comparing IntegerVariable with a non-IntegerVariable type");
     }
 
     @Override

@@ -36,26 +36,69 @@ public class Expression extends Node {
         Variable leftRes = left.execute();
         Variable rightRes = right.execute();
 
-        /*switch (operator){
+        switch (operator){
             case AND:
             case OR:
-                return handleLogicalExpression(()) //TODO
+                return handleLogicalExpression((BoolVariable) leftRes, (BoolVariable) rightRes);
             case PLUS:
             case MINUS:
             case MULTIPLY:
             case DIVIDE:
-                return handleArithmeticExpression(leftRes, rightRes); //TODO
+                return handleArithmeticExpression(leftRes, rightRes);
             case LESS:
             case LESS_EQUAL:
             case GREATER:
             case GREATER_EQUAL:
             case EQUAL:
             case NOT_EQUAL:
-                return handleRelationalExpression(); //TODO
+                return handleRelationalExpression((Comparable) leftRes, (Comparable) rightRes);
             default:
                 throw new RuntimeException("Error. Invalid operator");
-        }*/
+        }
+    }
 
-        return null;
+    private Variable handleArithmeticExpression(Variable leftResult, Variable rightResult) {
+        switch (operator) {
+            case PLUS:
+                return CommonOperations.add(leftResult, rightResult);
+            case MINUS:
+                return CommonOperations.subtract((IntegerVariable)leftResult, (IntegerVariable) rightResult);
+            case MULTIPLY:
+                return CommonOperations.multiply((IntegerVariable)leftResult, (IntegerVariable)rightResult);
+            case DIVIDE:
+                return CommonOperations.divide((IntegerVariable)leftResult, (IntegerVariable)rightResult);
+            default:
+                throw new RuntimeException("Unexpected operator in expression " + operator);
+        }
+    }
+
+    private Variable handleLogicalExpression(BoolVariable leftResult, BoolVariable rightResult) {
+        switch (operator) {
+            case AND:
+                return CommonOperations.and(leftResult, rightResult);
+            case OR:
+                return CommonOperations.or(leftResult, rightResult);
+            default:
+                throw new RuntimeException("Unexpected operator in expression " + operator);
+        }
+    }
+
+    private Variable handleRelationalExpression(Comparable leftResult, Comparable rightResult) {
+        switch (operator) {
+            case LESS:
+                return CommonOperations.less(leftResult, rightResult);
+            case LESS_EQUAL:
+                return CommonOperations.lessEqual(leftResult, rightResult);
+            case EQUAL:
+                return CommonOperations.equal(leftResult, rightResult);
+            case NOT_EQUAL:
+                return CommonOperations.notEqual(leftResult, rightResult);
+            case GREATER:
+                return CommonOperations.greater(leftResult, rightResult);
+            case GREATER_EQUAL:
+                return CommonOperations.greaterEqual(leftResult, rightResult);
+            default:
+                throw new RuntimeException("Unexpected operator in expression " + operator);
+        }
     }
 }

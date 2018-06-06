@@ -132,13 +132,25 @@ public class Parser {
 
     private Node parsePlayerInit(Identifier identifier) throws Exception {
         accept(TokenType.OPEN_BRACE);
-        String playerName = current.getValue();
-        accept(TokenType.CONST_STRING);
+        Node playerName = parseIdentifierOrAccessOrConstString();
         accept(TokenType.COMMA);
         int balance = Integer.parseInt(current.getValue());
         accept(TokenType.CONST_INT);
         accept(TokenType.CLOSED_BRACE);
         return new PlayerInitParams(playerName, balance);
+    }
+
+    private Node parseIdentifierOrAccessOrConstString() throws Exception {
+        switch (current.getType()){
+            case CONST_STRING:
+                String value = current.getValue();
+                accept(TokenType.CONST_STRING);
+                return new ConstString(value);
+            case IDENTIFIER:
+                return parseIdentifierOrAccess();
+                default:
+                    throw new RuntimeException("Error. Bad parameter for Player init");
+        }
     }
 
     private Instruction parsePrimitiveDefinition() throws Exception {

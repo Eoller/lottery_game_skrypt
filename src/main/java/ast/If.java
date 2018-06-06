@@ -18,7 +18,12 @@ public class If extends Instruction {
 
     @Override
     public Variable execute() {
-        //boolean isTrue =
+        boolean isTrueEx = ((BoolVariable) expression.execute()).getValue();
+        if(isTrueEx){
+            body.executeProgram();
+        }else if(elseBlock!=null){
+            elseBlock.getBody().executeProgram();
+        }
         System.out.println("If");
         return null;
     }

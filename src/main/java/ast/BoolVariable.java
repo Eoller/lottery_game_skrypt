@@ -29,6 +29,15 @@ public class BoolVariable extends Variable implements Comparable{
 
     @Override
     public int compare(Object object) {
-        return 0;
+        if (object instanceof BoolVariable) {
+            BoolVariable bool = (BoolVariable) object;
+            if (value && value != bool.getValue())
+                return -1;
+            else if (!value && value != bool.getValue())
+                return 1;
+            else
+                return 0;
+        } else
+            throw new RuntimeException("Error. Comparing BoolVariable with a non-BoolVariable type");
     }
 }
