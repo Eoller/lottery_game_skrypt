@@ -1,5 +1,7 @@
 package ast;
 
+import ast.var.BoolVariable;
+import ast.var.Variable;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -20,7 +22,13 @@ public class While extends Instruction {
     @Override
     public Variable execute() {
         System.out.println("While");
-        body.executeProgram();
+        boolean isTrue = ((BoolVariable) expression.execute()).getValue();
+        System.out.println("isTRUE: " + isTrue);
+        while (isTrue){
+            System.out.println("IN WHILE");
+            body.executeProgram();
+            isTrue = ((BoolVariable) expression.execute()).getValue();
+        }
         return null;
     }
 }

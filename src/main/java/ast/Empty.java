@@ -1,6 +1,8 @@
 package ast;
 
 
+import ast.var.Variable;
+
 public class Empty extends Instruction {
     private static Empty instance;
 

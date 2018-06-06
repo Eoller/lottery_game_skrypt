@@ -1,5 +1,6 @@
 package lexer;
 
+import model.AppContext;
 import ast.Program;
 import model.Token;
 import model.TokenType;
@@ -44,18 +45,30 @@ public class TokenizerTest {
 
     @Test
     public void randomTest() throws Exception {
-        tokenizer = new Tokenizer(createFileWithString("if(true){" +
+        /*tokenizer = new Tokenizer(createFileWithString("if(true){" +
                 "int a = 5 + 10" +
                 "Game a(12,15,20)" +
                 "Player b(" + '"' + "Hello" + '"' + ", 500)" +
+                "a.joinGame()" +
                 "}" +
                 "while(true){" +
                 "bool isTrue = false" +
                 "}" +
+                "$"));*/
+        tokenizer = new Tokenizer(createFileWithString("int a = 5 \n" +
+                "int b = 8 \n" +
+                "int c = 1 \n" +
+                "while(c < 30){\n" +
+                "\tc = c + b\n" +
+                "\tprint(c)\n" +
+                "}" +
                 "$"));
+
+
         Parser parser = new Parser(tokenizer);
         Program parse = parser.parse();
         parse.executeProgram();
+        AppContext.printContext();
     }
 
     private File createFileWithString(String data) {

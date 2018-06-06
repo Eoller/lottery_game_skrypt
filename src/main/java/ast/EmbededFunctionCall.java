@@ -1,5 +1,6 @@
 package ast;
 
+import ast.var.Variable;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

@@ -1,5 +1,7 @@
-package ast;
+package ast.constvar;
 
+import ast.var.IntegerVariable;
+import ast.var.Variable;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,6 +20,6 @@ public class ConstInt extends ConstValue {
 
     @Override
     public Variable execute() {
-        return null;
+        return new IntegerVariable(value);
     }
 }

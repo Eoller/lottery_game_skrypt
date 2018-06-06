@@ -1,5 +1,7 @@
-package ast;
+package ast.constvar;
 
+import ast.var.BoolVariable;
+import ast.var.Variable;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,7 +20,6 @@ public class ConstBool extends ConstValue {
 
     @Override
     public Variable execute() {
-
-        return null;
+        return new BoolVariable(value);
     }
 }

@@ -1,4 +1,6 @@
-package ast;
+package ast.definition;
+
+import ast.Node;
 
 public abstract class VariableDefinition extends Definition {
 

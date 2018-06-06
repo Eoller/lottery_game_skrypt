@@ -1,9 +1,13 @@
-package ast;
+package ast.definition;
 
+import ast.Node;
+import ast.var.Variable;
+import ast.var.VariableType;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import model.AppContext;
 
 /**
  * Created by Eoller on 05-Jun-18.
@@ -14,21 +18,23 @@ import lombok.Setter;
 @AllArgsConstructor
 public class GameDefinition extends VariableDefinition {
     private VariableType variableType;
-    private int bank;
-    private int status;
-    private int player_count;
 
-    public GameDefinition(String name, VariableType variableType, int bank, int status, int player_count){
+    public GameDefinition(String name, VariableType variableType, Node value){
         super.name = name;
         this.variableType = variableType;
-        this.bank = bank;
-        this.status = status;
-        this.player_count = player_count;
+        super.value = value;
     }
 
     @Override
     public Variable execute() {
         System.out.println("Game Definition");
+        switch (variableType){
+            case GAME:
+                AppContext.addVariable(super.name, value.execute());
+            break;
+            default:
+                throw new RuntimeException("Error: Expected primitive type");
+        }
         return null;
     }
 }

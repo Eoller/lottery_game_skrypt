@@ -1,1 +1,7 @@
-if(true){int a = 5 + 10Game a(12,15,20)Player b("Hello", 500)}while(true){bool isTrue = false}$
+int a = 5 
+int b = 8 
+int c = 1 
+while(c < 30){
+	c = c + b
+	print(c)
+}$
