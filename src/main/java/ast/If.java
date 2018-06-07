@@ -1,5 +1,7 @@
 package ast;
 
+import ast.var.BoolVariable;
+import ast.var.Variable;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -24,7 +26,6 @@ public class If extends Instruction {
         }else if(elseBlock!=null){
             elseBlock.getBody().executeProgram();
         }
-        System.out.println("If");
         return null;
     }
 }

@@ -1,9 +1,11 @@
 package ast;
 
+import ast.var.Variable;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import model.AppContext;
 
 /**
  * Created by Eoller on 04-Jun-18.
@@ -18,7 +20,6 @@ public class Identifier extends Node {
 
     @Override
     public Variable execute() {
-        System.out.println("Identifier");
         return AppContext.getVariable(name);
     }
 }

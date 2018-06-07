@@ -1,5 +1,6 @@
 package ast;
 
+import ast.var.Variable;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,7 +17,6 @@ public class EmbededVar extends Node {
     @Override
     public Variable execute() {
         //return just name
-        System.out.println("EmbededVar");
         return null;
     }
 }

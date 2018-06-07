@@ -1,6 +1,13 @@
 package parser;
 
 import ast.*;
+import ast.constvar.ConstBool;
+import ast.constvar.ConstInt;
+import ast.constvar.ConstString;
+import ast.definition.GameDefinition;
+import ast.definition.PlayerDefinition;
+import ast.definition.PrimitiveDefinition;
+import ast.var.VariableType;
 import lexer.Tokenizer;
 import model.Token;
 import model.TokenType;
@@ -105,19 +112,16 @@ public class Parser {
         accept(TokenType.GAME_TYPE);
         Identifier identifier = new Identifier(current.getValue());
         accept(TokenType.IDENTIFIER);
-        return new GameDefinition(identifier.getName(),variableType, parseGameInit(identifier));
+        return new GameDefinition(identifier.getName(),variableType, parseGameInit());
     }
 
-    private Node parseGameInit(Identifier identifier) throws Exception {
+    private Node parseGameInit() throws Exception {
         accept(TokenType.OPEN_BRACE);
-        int player_count = Integer.parseInt(current.getValue());
-        accept(TokenType.CONST_INT);
+        Node player_count = parseIdentifierOrAccessOrConstInteger();
         accept(TokenType.COMMA);
-        int bank = Integer.parseInt(current.getValue());
-        accept(TokenType.CONST_INT);
+        Node bank = parseIdentifierOrAccessOrConstInteger();
         accept(TokenType.COMMA);
-        int status = Integer.parseInt(current.getValue());
-        accept(TokenType.CONST_INT);
+        Node status = parseIdentifierOrAccessOrConstInteger();
         accept(TokenType.CLOSED_BRACE);
         return new GameInitParams(bank, player_count, status);
     }
@@ -134,10 +138,23 @@ public class Parser {
         accept(TokenType.OPEN_BRACE);
         Node playerName = parseIdentifierOrAccessOrConstString();
         accept(TokenType.COMMA);
-        int balance = Integer.parseInt(current.getValue());
-        accept(TokenType.CONST_INT);
+        Node balance = parseIdentifierOrAccessOrConstInteger();
         accept(TokenType.CLOSED_BRACE);
         return new PlayerInitParams(playerName, balance);
+    }
+
+    private Node parseIdentifierOrAccessOrConstInteger() throws Exception {
+        switch (current.getType()){
+            case CONST_INT:
+                Integer value = Integer.valueOf(current.getValue());
+                accept(TokenType.CONST_INT);
+                return new ConstInt(value);
+            case IDENTIFIER:
+                return parseIdentifierOrAccess();
+                default:
+                    throw new RuntimeException("Error. Bad parameter for Player init");
+
+        }
     }
 
     private Node parseIdentifierOrAccessOrConstString() throws Exception {
@@ -276,27 +293,24 @@ public class Parser {
             return node;
     }
 
-    private Instruction parseAccess(Node from) throws Exception {
+    private Instruction parseAccess(Node from) throws Exception { //должно возвращать сына Node у котого в execute будет кто-то из детей Variable
         accept(TokenType.PERIOD);
-        Node identifier = parseEmdedVarOrEmbededFunctionCall(); //тут должно быть что-то что вернёт либо
-        // ембедед вар с екзекутом который потом будем использовать в Access, либо
-        // ембедед функцию с екзекутом результат которой потом будем использовать в Access
+        Node identifier = parseEmdedVarOrEmbededFunctionCall(from);
 
         Instruction fromAccess = new Access(from, identifier);
         return fromAccess;
     }
 
-    private Node parseEmdedVarOrEmbededFunctionCall() throws Exception {
-        String name = current.getValue();
-        Node node;
+    private Node parseEmdedVarOrEmbededFunctionCall(Node from) throws Exception {
+        Identifier identifier = new Identifier(current.getValue());
+        Node node = identifier;
         accept(TokenType.BALANCE, TokenType.BANK, TokenType.FIND_WINNER,TokenType.GAME_TYPE, TokenType.GAME_TYPE,
                 TokenType.END_GAME, TokenType.JOIN_GAME, TokenType.LEAVE_GAME,
                 TokenType.NAME, TokenType.START_GAME, TokenType.STATUS, TokenType.WINER);
         if(current.getType() == TokenType.OPEN_BRACE){
-            node = new EmbededFunctionCall(parseFunctionCallArguments(), name);
+            node = new EmbededFunctionCall(parseFunctionCallArguments(),(Identifier) from, identifier);
             return node;
         }
-        node = new EmbededVar(name);
         return node;
 
     }

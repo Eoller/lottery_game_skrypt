@@ -1,7 +1,11 @@
 package ast;
 
 
+import ast.var.BoolVariable;
+import ast.var.IntegerVariable;
+import ast.var.Variable;
 import lombok.Getter;
+import model.CommonOperations;
 import model.TokenType;
 
 // expression = T {logicalOperator T}
@@ -32,7 +36,6 @@ public class Expression extends Node {
 
     @Override
     public Variable execute() {
-        System.out.println("Expression");
         Variable leftRes = left.execute();
         Variable rightRes = right.execute();
 

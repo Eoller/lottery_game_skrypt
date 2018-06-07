@@ -1,6 +1,8 @@
 package ast;
 
 
+import ast.var.Variable;
+
 public class Empty extends Instruction {
     private static Empty instance;
 
@@ -13,7 +15,6 @@ public class Empty extends Instruction {
 
     @Override
     public Variable execute() {
-        System.out.println("Empty");
         return null;
     }
 }

@@ -1,6 +1,6 @@
 package lexer;
 
-import ast.AppContext;
+import model.AppContext;
 import ast.Program;
 import model.Token;
 import model.TokenType;
@@ -55,24 +55,14 @@ public class TokenizerTest {
                 "bool isTrue = false" +
                 "}" +
                 "$"));*/
-        tokenizer = new Tokenizer(createFileWithString("int a = 5\n" +
-                "int b = 10\n" +
-                "bool bol1 = true\n" +
-                "bool bol2 = false\n" +
-                "String str = \"hello world\"\n" +
-                "Game game1(2,3,5)\n" +
-                "Player player1(\"Dima\",500)\n" +
-                "if(bol1){\n" +
-                "\tint lol = 55\n" +
-                "\tb = lol * 2\n" +
-                "}else{\n" +
-                "\tint j = 5 + 10*2\n" +
-                "}\n" +
-                "while(a >= 2){\n" +
-                "a = a - 1\n" +
-                "print(a)\n" +
-                "wait(5)\n" +
-                "}\n" +
+        tokenizer = new Tokenizer(createFileWithString("Game game1(2,0,0)\n" +
+                "Player player1(\"Dima\", 1000)\n" +
+                "print(\"player1 balance is: \")\n" +
+                "println(player1.balance)\n" +
+                "player1.joinGame(game1,100)\n" +
+                "print(\"player1 balance is: \")\n" +
+                "println(player1.balance)\n" +
+                "player1.leaveGame(game1)"+
                 "$"));
 
 

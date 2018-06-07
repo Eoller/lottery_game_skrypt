@@ -64,7 +64,6 @@ public class Tokenizer {
         while (Character.isLetter(scanner.showMeCurrentChar()) || Character.isDigit(scanner
                 .showMeCurrentChar()) && !scanner.isFinished()){
             if(Character.compare(scanner.showMeCurrentChar(), '\n') == 0){
-                System.out.println("BIALY ZNAK");
                 break;
             }
             stringBuilder.append(scanner.getNextChar());
