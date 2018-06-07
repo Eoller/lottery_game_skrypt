@@ -26,7 +26,6 @@ public class If extends Instruction {
         }else if(elseBlock!=null){
             elseBlock.getBody().executeProgram();
         }
-        System.out.println("If");
         return null;
     }
 }

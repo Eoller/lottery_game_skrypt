@@ -12,7 +12,7 @@ import lombok.Setter;
 public class PlayerVariable extends Variable {
 
     private String playerName;
-    private int balance;
+    private Integer balance;
 
     @Override
     public String toString() {

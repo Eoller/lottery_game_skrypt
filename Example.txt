@@ -1,7 +1,47 @@
-int a = 5 
-int b = 8 
-int c = 1 
-while(c < 30){
-	c = c + b
-	print(c)
-}$
+int a = 100
+a = (a + 50/2)*3
+String  b = "Alek"
+println(a)
+println(b)
+
+while(a < 500){
+	a = a + 25
+	print("a = ")
+	println(a)
+}
+
+if(b == "Alek"){
+	println("TAK")
+}
+
+int i = 0
+while(i < 10){
+	if(i == 10){
+		println("IN WHILE")
+	}
+	i = i + 2
+	println(i)
+}
+
+
+Player player1(b, a)
+Player player2("Dmitry", 200)
+Player player3("Piotr", 500)
+Game game1(0,0,0)
+
+print("game1 bank = ")
+println(game1.bank)
+
+
+print("player1 balance = ")
+println(player1.balance)
+
+print("player1 name = ")
+println(player1.name)
+
+player1.joinGame(game1, 100)
+print("player1 balance = ")
+println(player1.balance)
+
+
+$

@@ -22,12 +22,14 @@ public class FunctionCall extends Instruction {
 
     @Override
     public Variable execute() {
-        switch (identifier.getName()){
+        switch (identifier.getName()) {
             case "print":
+                System.out.print(args.get(0).execute());
+                break;
+            case "println":
                 System.out.println(args.get(0).execute());
                 break;
             case "wait":
-                System.out.println("WAIT FUNct");
                 IntegerVariable time = (IntegerVariable) args.get(0).execute();
                 try {
                     sleep(time.getValue() * 1000);
@@ -36,7 +38,7 @@ public class FunctionCall extends Instruction {
                 }
                 break;
             default:
-                    throw new RuntimeException("Error. Bad embeded function parameters.");
+                throw new RuntimeException("Error. Bad embeded function parameters.");
         }
         return null;
     }

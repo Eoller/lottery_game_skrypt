@@ -17,7 +17,6 @@ public class EmbededVar extends Node {
     @Override
     public Variable execute() {
         //return just name
-        System.out.println("EmbededVar");
         return null;
     }
 }

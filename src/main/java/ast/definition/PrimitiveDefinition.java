@@ -37,7 +37,6 @@ public class PrimitiveDefinition extends VariableDefinition {
                 default:
                     throw new RuntimeException("Error: Expected primitive type");
         }
-        System.out.println("Primitive definition of ->" + name);
         return null;
     }
 }

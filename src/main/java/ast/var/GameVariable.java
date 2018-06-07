@@ -11,9 +11,9 @@ import lombok.Setter;
 @AllArgsConstructor
 public class GameVariable extends Variable {
 
-    private int playerCount;
-    private int bank;
-    private int status;
+    private Integer playerCount;
+    private Integer bank;
+    private Integer status;
 
     @Override
     public String toString() {

@@ -15,7 +15,6 @@ public class Empty extends Instruction {
 
     @Override
     public Variable execute() {
-        System.out.println("Empty");
         return null;
     }
 }

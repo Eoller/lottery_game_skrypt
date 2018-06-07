@@ -11,12 +11,15 @@ import lombok.Setter;
  * Created by Eoller on 04-Jun-18.
  */
 @NoArgsConstructor
-@AllArgsConstructor
 @Getter
 @Setter
 public class ConstString extends ConstValue {
 
     private String value;
+
+    public ConstString(String value){
+        this.value = value.substring(1, value.length()-1);
+    }
 
     @Override
     public Variable execute() {

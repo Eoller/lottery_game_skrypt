@@ -1,6 +1,8 @@
 package ast.var;
 
-public class StringVariable extends Variable {
+import ast.Comparable;
+
+public class StringVariable extends Variable implements Comparable {
 
     private StringBuilder value;
 
@@ -24,5 +26,15 @@ public class StringVariable extends Variable {
     @Override
     public VariableType getType() {
         return VariableType.STRING;
+    }
+
+    @Override
+    public int compare(Object object) {
+        if(object instanceof StringVariable){
+            StringVariable stringVariable = (StringVariable) object;
+            return toString().compareTo(stringVariable.toString());
+        }else {
+            throw new RuntimeException("Error. Comparing StringVariable with a non-StringVariable type");
+        }
     }
 }

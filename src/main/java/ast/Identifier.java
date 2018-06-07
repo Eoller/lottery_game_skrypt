@@ -20,7 +20,6 @@ public class Identifier extends Node {
 
     @Override
     public Variable execute() {
-        System.out.println("Identifier");
         return AppContext.getVariable(name);
     }
 }

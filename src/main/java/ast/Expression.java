@@ -36,7 +36,6 @@ public class Expression extends Node {
 
     @Override
     public Variable execute() {
-        System.out.println("Expression");
         Variable leftRes = left.execute();
         Variable rightRes = right.execute();
 
