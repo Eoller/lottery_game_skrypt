@@ -1,0 +1,86 @@
+int a = 100
+a = (a + 50/2)*3
+String  b = "Alek"
+println(a)
+println(b)
+
+while(a < 500){
+	a = a + 25
+	print("a = ")
+	println(a)
+}
+
+if(b == "Alek"){
+	println("TAK")
+}
+
+int i = 0
+while(i < 10){
+	if(i == 10){
+		println("IN WHILE")
+	}
+	i = i + 2
+	println(i)
+}
+
+
+Player player1(b, a)
+Player player2("Dmitry", 200)
+Player player3("Piotr", 500)
+Game game1()
+
+
+
+print("game1 bank = ")
+println(game1.bank)
+
+print("game1 status = ")
+println(game1.status)
+
+print("game1 playerCount = ")
+println(game1.playerCount)
+
+print("player1 balance = ")
+println(player1.balance)
+
+print("player1 name = ")
+println(player1.name)
+
+player1.joinGame(game1, 100)
+if(player1.balance == 400 && game1.bank == 100){
+    println("OK")
+}
+
+
+game1.nextRound()
+game1.findWinner()
+
+print("game1 winner = ")
+println(game1.winner)
+
+print("player1 balance = ")
+println(player1.balance)
+
+print("game1 bank = ")
+println(game1.bank)
+
+print("game1 status = ")
+println(game1.status)
+
+print("game1 playerCount = ")
+println(game1.playerCount)
+
+player1.leaveGame(game1)
+
+print("game1 bank = ")
+println(game1.bank)
+
+print("game1 status = ")
+println(game1.status)
+
+print("game1 playerCount = ")
+println(game1.playerCount)
+
+
+
+$

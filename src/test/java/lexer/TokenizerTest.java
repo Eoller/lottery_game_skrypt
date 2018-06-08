@@ -25,7 +25,7 @@ public class TokenizerTest {
 
     @After
     public void afterTests(){
-        file.delete();
+//        file.delete();
     }
 
     @Test
@@ -55,15 +55,47 @@ public class TokenizerTest {
                 "bool isTrue = false" +
                 "}" +
                 "$"));*/
-        tokenizer = new Tokenizer(createFileWithString("Game game1(2,0,0)\n" +
-                "Player player1(\"Dima\", 1000)\n" +
-                "print(\"player1 balance is: \")\n" +
+        tokenizer = new Tokenizer(new File("Example.txt"));
+        /*tokenizer = new Tokenizer(createFileWithString("int a = 100\n" +
+                "a = (a + 50/2)*3\n" +
+                "String  b = \"Alek\"\n" +
+                "println(a)\n" +
+                "println(b)\n" +
+                "\n" +
+                "while(a < 500){\n" +
+                "\ta = a + 25\n" +
+                "\tprint(\"a = \")\n" +
+                "\tprintln(a)\n" +
+                "}\n" +
+                "\n" +
+                "if(b == \"Alek\"){\n" +
+                "\tprintln(\"TAK\")\n" +
+                "}\n" +
+                "\n" +
+                "int i = 0\n" +
+                "while(i < 10){\n" +
+                "\tif(i == 10){\n" +
+                "\t\tprintln(\"IN WHILE\")\n" +
+                "\t}\n" +
+                "\ti = i + 2\n" +
+                "\tprintln(i)\n" +
+                "}\n" +
+                "\n" +
+                "\n" +
+                "Player player1(b, a)\n" +
+                "Game game1(0,0,0)\n" +
+                "\n" +
+                "print(\"game1 bank = \")\n" +
+                "println(game1.bank)\n" +
+                "\n" +
+                "\n" +
+                "print(\"player1 balance = \")\n" +
                 "println(player1.balance)\n" +
-                "player1.joinGame(game1,100)\n" +
-                "print(\"player1 balance is: \")\n" +
-                "println(player1.balance)\n" +
-                "player1.leaveGame(game1)"+
-                "$"));
+                "\n" +
+                "print(\"player1 name = \")\n" +
+                "println(player1.name)\n" +
+                "\n" +
+                "$"));*/
 
 
         Parser parser = new Parser(tokenizer);

@@ -116,14 +116,9 @@ public class Parser {
     }
 
     private Node parseGameInit() throws Exception {
-        accept(TokenType.OPEN_BRACE);
-        Node player_count = parseIdentifierOrAccessOrConstInteger();
-        accept(TokenType.COMMA);
-        Node bank = parseIdentifierOrAccessOrConstInteger();
-        accept(TokenType.COMMA);
-        Node status = parseIdentifierOrAccessOrConstInteger();
+        accept(TokenType.OPEN_BRACE);;
         accept(TokenType.CLOSED_BRACE);
-        return new GameInitParams(bank, player_count, status);
+        return new GameInitParams();
     }
 
     private Instruction parsePlayerTypeDefinition() throws Exception {
@@ -304,8 +299,9 @@ public class Parser {
     private Node parseEmdedVarOrEmbededFunctionCall(Node from) throws Exception {
         Identifier identifier = new Identifier(current.getValue());
         Node node = identifier;
-        accept(TokenType.BALANCE, TokenType.BANK, TokenType.FIND_WINNER,TokenType.GAME_TYPE, TokenType.GAME_TYPE,
-                TokenType.END_GAME, TokenType.JOIN_GAME, TokenType.LEAVE_GAME,
+        accept(TokenType.BALANCE, TokenType.BANK, TokenType.FIND_WINNER,TokenType.GAME_TYPE, TokenType.PLAYER_TYPE,
+                TokenType.PLAYER_COUNT, TokenType.NEXT_ROUND,
+                TokenType.NEXT_ROUND, TokenType.JOIN_GAME, TokenType.LEAVE_GAME,
                 TokenType.NAME, TokenType.START_GAME, TokenType.STATUS, TokenType.WINER);
         if(current.getType() == TokenType.OPEN_BRACE){
             node = new EmbededFunctionCall(parseFunctionCallArguments(),(Identifier) from, identifier);

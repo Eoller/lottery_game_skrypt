@@ -14,6 +14,14 @@ public class GameVariable extends Variable {
     private Integer playerCount;
     private Integer bank;
     private Integer status;
+    private String winner = "";
+
+
+    public GameVariable(Integer playerCount, Integer bank, Integer status) {
+        this.playerCount = playerCount;
+        this.bank = bank;
+        this.status = status;
+    }
 
     @Override
     public String toString() {
@@ -21,6 +29,7 @@ public class GameVariable extends Variable {
                 "playerCount=" + playerCount +
                 ", bank=" + bank +
                 ", status=" + status +
+                ", winner='" + winner + '\'' +
                 '}';
     }
 

@@ -97,7 +97,7 @@ public class Tokenizer {
         out.append(currentSymbol);
 
         if(scanner.showMeCurrentChar() == '&' && currentSymbol == '&' || scanner.showMeCurrentChar() == '|' && currentSymbol == '|'){
-            out.append(scanner.showMeCurrentChar());
+            out.append(scanner.getNextChar());
         }else {
             return error(scanner.showMeCurrentChar());
         }
@@ -188,7 +188,7 @@ public class Tokenizer {
         embededWords.put("leaveGame", new Token(TokenType.LEAVE_GAME, "leaveGame"));
 
         embededWords.put("startGame", new Token(TokenType.START_GAME, "startGame"));
-        embededWords.put("endGame", new Token(TokenType.END_GAME, "endGame"));
+        embededWords.put("nextRound", new Token(TokenType.NEXT_ROUND, "nextRound"));
         embededWords.put("findWinner", new Token(TokenType.FIND_WINNER, "findWinner"));
 
     }

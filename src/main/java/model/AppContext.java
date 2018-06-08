@@ -1,6 +1,10 @@
 package model;
 
+import ast.var.GameVariable;
+import ast.var.PlayerVariable;
 import ast.var.Variable;
+import model.gamestub.Casino;
+import model.gamestub.Player;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -34,5 +38,29 @@ public class AppContext {
 
     public static void printContext(){
         variables.forEach((s, variable) -> System.out.println("[" + s +  "] --> value: (" + variable.toString() + "):" + variable.getType().name()));
+    }
+
+    public static void synchronizeContext(){
+        AppContext.variables.forEach((s, variable) -> {
+            Casino.games.forEach(game -> {
+                if(game.getId().equals(s)){
+                    GameVariable var = (GameVariable) variable;
+                    var.setPlayerCount(game.getPlayers().size());
+                    var.setBank(game.getBank());
+                    var.setStatus(game.getStatus());
+                    if(game.getWinner() != null){
+                        var.setWinner(game.getWinner().getId());
+                    }
+                }
+            });
+            Casino.players.forEach(player -> {
+                if(player.getId().equals(s)){
+                    PlayerVariable playerVariable = (PlayerVariable) variable;
+                    playerVariable.setBalance(player.getBalance());
+                    playerVariable.setPlayerName(player.getName());
+                }
+            });
+        });
+
     }
 }

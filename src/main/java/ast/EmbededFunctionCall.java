@@ -36,12 +36,19 @@ public class EmbededFunctionCall extends Node {
         Variable leftSideName = identifier.execute();
         switch (leftSideName.getType()){
             case GAME:
-                GameVariable gameVariable = (GameVariable) leftSideName;
                 switch (rightSideName){
                     case "nextRound":
+                        String gameLeftSideId = identifier.getName();
+                        Casino.nextRoundOnGameById(gameLeftSideId);
+                        AppContext.synchronizeContext();
+                        break;
                     case "findWinner":
-
+                        String gameleft = identifier.getName();
+                        Casino.findWinnerOnGameById(gameleft);
+                        AppContext.synchronizeContext();
+                        break;
                 }
+                break;
             case PLAYER:
                 PlayerVariable playerVariable = (PlayerVariable) leftSideName;
                 switch (rightSideName){
@@ -50,13 +57,18 @@ public class EmbededFunctionCall extends Node {
                         Identifier gameId = (Identifier) argumentList.get(0);
                         IntegerVariable bet = (IntegerVariable) argumentList.get(1).execute();
                         Casino.addPlayerToGame(gameId.getName() ,playerId, bet.getValue());
-                        PlayerVariable playerAdded = (PlayerVariable) AppContext.getVariable(playerId);
-                        playerAdded.setBalance(playerAdded.getBalance() - bet.getValue());
+
+                        AppContext.synchronizeContext();
+                        break;
                     case "leaveGame":
                         String playerIdk = identifier.getName();
                         Identifier gameIdk = (Identifier) argumentList.get(0);
                         Casino.kickPlayerFromGame(gameIdk.getName(), playerIdk);
+
+                        AppContext.synchronizeContext();
+                        break;
                 }
+                break;
                 default:
         }
         return null;

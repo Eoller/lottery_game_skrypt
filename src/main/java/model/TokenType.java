@@ -25,7 +25,7 @@ public enum TokenType {
 
 
     //GRA
-    START_GAME, END_GAME, FIND_WINNER,
+    START_GAME, NEXT_ROUND, FIND_WINNER,
     STATUS, BANK, WINER, PLAYER_COUNT,
 
     //PLAYER
