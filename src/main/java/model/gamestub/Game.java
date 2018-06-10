@@ -7,7 +7,10 @@ import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.List;
-
+import java.util.Random;
+/**
+ * Created by Yahor_Melnik on 03-Jun-18.
+ */
 @Getter
 @Setter
 @NoArgsConstructor
@@ -16,10 +19,21 @@ public class Game {
     private String id;
     private List<Player> players = new ArrayList<>();
     private int bank;
-    private int status; //1 -started, 2-finished
+    private int status;
+    private Player winner;
 
     public Game(String id){
         this.id = id;
+    }
+
+    public void findWinner(){
+        if(status == 1) {
+            Random random = new Random();
+            int n = random.nextInt(players.size()) + 1;
+            winner = players.get(n-1);
+            winner.setBalance(winner.getBalance() + bank);
+            bank = 0;
+        }
     }
 
     public void addPlayer(Player player, int bet){
@@ -46,7 +60,7 @@ public class Game {
         for(int i = 0; i < players.size(); i++){
             String id = players.get(i).getId();
             if(id.equals(playerId)){
-                players.remove(id);
+                players.remove(i);
             }
         }
     }

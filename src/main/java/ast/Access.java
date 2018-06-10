@@ -1,52 +1,54 @@
 package ast;
 
-import ast.constvar.ConstInt;
-import ast.constvar.ConstString;
 import ast.var.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
+/**
+ * Created by Yahor_Melnik on 10-May-18.
+ */
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 public class Access extends Instruction {
 
-    private Node left;
-    private Node right;
+    private Unit left;
+    private Unit right;
 
     @Override
-    public Variable execute() {
+    public Variable run() {
         Identifier identifier = (Identifier) left;
 
-        if(right instanceof Identifier){
+        if (right instanceof Identifier) {
             Identifier rght = (Identifier) right;
-            Variable var = left.execute();
-            switch (var.getType()){
+            Variable var = left.run();
+            switch (var.getType()) {
                 case GAME:
-                    GameVariable game = (GameVariable) var;
-                    switch (rght.getName()){
+                    GameVar game = (GameVar) var;
+                    switch (rght.getName()) {
                         case "bank":
-                            return new IntegerVariable(game.getBank());
+                            return new IntegerVar(game.getBank());
                         case "playerCount":
-                            return new IntegerVariable(game.getPlayerCount());
+                            return new IntegerVar(game.getPlayerCount());
                         case "status":
-                            return new IntegerVariable(game.getStatus());
+                            return new IntegerVar(game.getStatus());
+                        case "winner":
+                            return new StringVar(game.getWinner());
                     }
                 case PLAYER:
-                    PlayerVariable player = (PlayerVariable) var;
-                    switch (rght.getName()){
+                    PlayerVar player = (PlayerVar) var;
+                    switch (rght.getName()) {
                         case "name":
-                            return new StringVariable(player.getPlayerName());
+                            return new StringVar(player.getPlayerName());
                         case "balance":
-                            return new IntegerVariable(player.getBalance());
+                            return new IntegerVar(player.getBalance());
                     }
             }
-        }else if(right instanceof EmbededFunctionCall){
+        } else if (right instanceof EmbededFunctionCall) {
             EmbededFunctionCall embededFunctionCall = (EmbededFunctionCall) right;
-            embededFunctionCall.execute();
+            embededFunctionCall.run();
         }
         return null;
     }

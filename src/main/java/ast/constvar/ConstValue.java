@@ -1,9 +1,9 @@
 package ast.constvar;
 
-import ast.Node;
+import ast.Unit;
 
 /**
- * Created by Eoller on 04-Jun-18.
+ * Created by Yahor_Melnik on 10-May-18.
  */
-public abstract class ConstValue extends Node {
+public abstract class ConstValue extends Unit {
 }

@@ -7,7 +7,9 @@ import model.TokenType;
 
 import java.io.File;
 import java.util.HashMap;
-
+/**
+ * Created by Yahor_Melnik on 03-Jun-18.
+ */
 public class Tokenizer {
 
     private Scanner scanner;
@@ -17,6 +19,14 @@ public class Tokenizer {
     public Tokenizer(File file) {
         scanner = new FileScanner(file);
         initEmbededWords();
+    }
+
+    public int getLineNumber(){
+        return scanner.getLineNumber();
+    }
+
+    public int getColNumber(){
+        return scanner.getColNumber();
     }
 
     public Token nextToken(){
@@ -97,7 +107,7 @@ public class Tokenizer {
         out.append(currentSymbol);
 
         if(scanner.showMeCurrentChar() == '&' && currentSymbol == '&' || scanner.showMeCurrentChar() == '|' && currentSymbol == '|'){
-            out.append(scanner.showMeCurrentChar());
+            out.append(scanner.getNextChar());
         }else {
             return error(scanner.showMeCurrentChar());
         }
@@ -135,7 +145,8 @@ public class Tokenizer {
     }
 
     private Token error(char currentChar){
-        return new Token(TokenType.EMPTY, "Unexpected char"); //TODO refactor method
+        return new Token(TokenType.EMPTY, "Unexpected char " + currentChar +
+                " at " + scanner.getLineNumber() + ":" + scanner.getColNumber());
     }
 
     private void initEmbededWords() {
@@ -188,7 +199,7 @@ public class Tokenizer {
         embededWords.put("leaveGame", new Token(TokenType.LEAVE_GAME, "leaveGame"));
 
         embededWords.put("startGame", new Token(TokenType.START_GAME, "startGame"));
-        embededWords.put("endGame", new Token(TokenType.END_GAME, "endGame"));
+        embededWords.put("nextRound", new Token(TokenType.NEXT_ROUND, "nextRound"));
         embededWords.put("findWinner", new Token(TokenType.FIND_WINNER, "findWinner"));
 
     }

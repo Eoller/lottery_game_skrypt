@@ -8,18 +8,18 @@ import lombok.Setter;
 import model.AppContext;
 
 /**
- * Created by Eoller on 04-Jun-18.
+ * Created by Yahor_Melnik on 10-May-18.
  */
 @NoArgsConstructor
 @AllArgsConstructor
 @Setter
 @Getter
-public class Identifier extends Node {
+public class Identifier extends Unit {
 
     private String name;
 
     @Override
-    public Variable execute() {
+    public Variable run() {
         return AppContext.getVariable(name);
     }
 }

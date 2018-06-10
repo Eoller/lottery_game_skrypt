@@ -1,6 +1,6 @@
 package ast;
 
-import ast.var.BoolVariable;
+import ast.var.BoolVar;
 import ast.var.Variable;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 /**
- * Created by Eoller on 05-Jun-18.
+ * Created by Yahor_Melnik on 10-May-18.
  */
 @Setter
 @Getter
@@ -16,15 +16,15 @@ import lombok.Setter;
 @AllArgsConstructor
 public class While extends Instruction {
 
-    private Node expression;
+    private Unit expression;
     private Program body;
 
     @Override
-    public Variable execute() {
-        boolean isTrue = ((BoolVariable) expression.execute()).getValue();
+    public Variable run() {
+        boolean isTrue = ((BoolVar) expression.run()).getValue();
         while (isTrue){
             body.executeProgram();
-            isTrue = ((BoolVariable) expression.execute()).getValue();
+            isTrue = ((BoolVar) expression.run()).getValue();
         }
         return null;
     }

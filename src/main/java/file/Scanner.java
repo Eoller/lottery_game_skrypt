@@ -1,7 +1,7 @@
 package file;
 
 /**
- * Created by Eoller on 18-Apr-18.
+ * Created by Yahor_Melnik on 03-Jun-18.
  */
 public interface Scanner {
 
@@ -10,4 +10,8 @@ public interface Scanner {
     public char getNextChar();
 
     public boolean isFinished();
+
+    public int getLineNumber();
+
+    public int getColNumber();
 }

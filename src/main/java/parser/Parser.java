@@ -4,9 +4,9 @@ import ast.*;
 import ast.constvar.ConstBool;
 import ast.constvar.ConstInt;
 import ast.constvar.ConstString;
-import ast.definition.GameDefinition;
-import ast.definition.PlayerDefinition;
-import ast.definition.PrimitiveDefinition;
+import ast.definition.GameDef;
+import ast.definition.PlayerDef;
+import ast.definition.PrimitiveDef;
 import ast.var.VariableType;
 import lexer.Tokenizer;
 import model.Token;
@@ -18,7 +18,7 @@ import java.util.List;
 import static model.TokenType.*;
 
 /**
- * Created by Eoller on 03-Jun-18.
+ * Created by Yahor_Melnik on 10-May-18.
  */
 public class Parser {
     private Tokenizer lexer;
@@ -83,7 +83,7 @@ public class Parser {
         accept(TokenType.WHILE);
         accept(TokenType.OPEN_BRACE);
 
-        Node expression = parseExpression();
+        Unit expression = parseExpression();
 
         accept(TokenType.CLOSED_BRACE);
 
@@ -112,18 +112,13 @@ public class Parser {
         accept(TokenType.GAME_TYPE);
         Identifier identifier = new Identifier(current.getValue());
         accept(TokenType.IDENTIFIER);
-        return new GameDefinition(identifier.getName(),variableType, parseGameInit());
+        return new GameDef(identifier.getName(),variableType, parseGameInit());
     }
 
-    private Node parseGameInit() throws Exception {
-        accept(TokenType.OPEN_BRACE);
-        Node player_count = parseIdentifierOrAccessOrConstInteger();
-        accept(TokenType.COMMA);
-        Node bank = parseIdentifierOrAccessOrConstInteger();
-        accept(TokenType.COMMA);
-        Node status = parseIdentifierOrAccessOrConstInteger();
+    private Unit parseGameInit() throws Exception {
+        accept(TokenType.OPEN_BRACE);;
         accept(TokenType.CLOSED_BRACE);
-        return new GameInitParams(bank, player_count, status);
+        return new GameInitParams();
     }
 
     private Instruction parsePlayerTypeDefinition() throws Exception {
@@ -131,19 +126,19 @@ public class Parser {
         accept(TokenType.PLAYER_TYPE);
         Identifier identifier = new Identifier(current.getValue());
         accept(TokenType.IDENTIFIER);
-        return new PlayerDefinition(identifier.getName(), variableType, parsePlayerInit(identifier));
+        return new PlayerDef(identifier.getName(), variableType, parsePlayerInit(identifier));
     }
 
-    private Node parsePlayerInit(Identifier identifier) throws Exception {
+    private Unit parsePlayerInit(Identifier identifier) throws Exception {
         accept(TokenType.OPEN_BRACE);
-        Node playerName = parseIdentifierOrAccessOrConstString();
+        Unit playerName = parseIdentifierOrAccessOrConstString();
         accept(TokenType.COMMA);
-        Node balance = parseIdentifierOrAccessOrConstInteger();
+        Unit balance = parseIdentifierOrAccessOrConstInteger();
         accept(TokenType.CLOSED_BRACE);
         return new PlayerInitParams(playerName, balance);
     }
 
-    private Node parseIdentifierOrAccessOrConstInteger() throws Exception {
+    private Unit parseIdentifierOrAccessOrConstInteger() throws Exception {
         switch (current.getType()){
             case CONST_INT:
                 Integer value = Integer.valueOf(current.getValue());
@@ -157,7 +152,7 @@ public class Parser {
         }
     }
 
-    private Node parseIdentifierOrAccessOrConstString() throws Exception {
+    private Unit parseIdentifierOrAccessOrConstString() throws Exception {
         switch (current.getType()){
             case CONST_STRING:
                 String value = current.getValue();
@@ -175,7 +170,7 @@ public class Parser {
         accept(TokenType.INT_TYPE, TokenType.STRING_TYPE, TokenType.BOOL_TYPE);
         Identifier identifier = new Identifier(current.getValue());
         accept(TokenType.IDENTIFIER);
-        return new PrimitiveDefinition(variableType, identifier.getName(), parseAssignment(identifier));
+        return new PrimitiveDef(variableType, identifier.getName(), parseAssignment(identifier));
     }
 
     private Instruction parseAssignment(Identifier identifier) throws Exception {
@@ -204,7 +199,7 @@ public class Parser {
         accept(TokenType.IF);
         accept(TokenType.OPEN_BRACE);
 
-        Node expression = parseExpression();
+        Unit expression = parseExpression();
 
         accept(TokenType.CLOSED_BRACE);
 
@@ -218,12 +213,12 @@ public class Parser {
         return new If(expression, body, null);
     }
 
-    private Node parseExpression() throws Exception {
+    private Unit parseExpression() throws Exception {
         return parseLogicalExpression();
     }
 
-    private Node parseRelationExpression() throws Exception {
-        Node node = parseLowPriorityArithmeticExpression();
+    private Unit parseRelationExpression() throws Exception {
+        Unit unit = parseLowPriorityArithmeticExpression();
 
         while (isAcceptable(TokenType.LESS, TokenType.LESS_EQUAL,
                 TokenType.EQUAL, TokenType.NOT_EQUAL,
@@ -234,92 +229,93 @@ public class Parser {
             accept(TokenType.LESS, TokenType.LESS_EQUAL,
                     TokenType.EQUAL, TokenType.NOT_EQUAL,
                     TokenType.GREATER, TokenType.GREATER_EQUAL);
-            node = new Expression(node, type, parseLowPriorityArithmeticExpression());
+            unit = new Expression(unit, type, parseLowPriorityArithmeticExpression());
 
         }
 
-        return node;
+        return unit;
     }
 
-    private Node parseLowPriorityArithmeticExpression() throws Exception {
-        Node node = parseHighPriorityArithmeticExpression();
+    private Unit parseLowPriorityArithmeticExpression() throws Exception {
+        Unit unit = parseHighPriorityArithmeticExpression();
 
         while (isAcceptable(TokenType.PLUS, TokenType.MINUS)) {
             TokenType type = current.getType();
             accept(TokenType.PLUS, TokenType.MINUS);
-            node = new Expression(node, type, parseHighPriorityArithmeticExpression());
+            unit = new Expression(unit, type, parseHighPriorityArithmeticExpression());
         }
 
-        return node;
+        return unit;
     }
 
-    private Node parseHighPriorityArithmeticExpression() throws Exception {
-        Node node = parseOperandOrExpression();
+    private Unit parseHighPriorityArithmeticExpression() throws Exception {
+        Unit unit = parseOperandOrExpression();
 
         while (isAcceptable(TokenType.MULTIPLY, TokenType.DIVIDE)) {
             TokenType type = current.getType();
             accept(TokenType.MULTIPLY, TokenType.DIVIDE);
-            node = new Expression(node, type, parseOperandOrExpression());
+            unit = new Expression(unit, type, parseOperandOrExpression());
         }
 
-        return node;
+        return unit;
     }
 
-    private Node parseOperandOrExpression() throws Exception {
+    private Unit parseOperandOrExpression() throws Exception {
         if (current.getType() == TokenType.OPEN_BRACE) {
             accept(TokenType.OPEN_BRACE);
-            Node node = parseExpression();
+            Unit unit = parseExpression();
             accept(TokenType.CLOSED_BRACE);
-            return node;
+            return unit;
         } else
             return parseOperand();
     }
 
-    private Node parseOperand() throws Exception {
+    private Unit parseOperand() throws Exception {
         if(current.getType() == TokenType.IDENTIFIER)
             return parseIdentifierOrAccess();
         else
             return parseConstValue();
     }
 
-    private Node parseIdentifierOrAccess() throws Exception {
+    private Unit parseIdentifierOrAccess() throws Exception {
         Identifier identifier = new Identifier(current.getValue());
-        Node node = identifier;
+        Unit unit = identifier;
         accept(TokenType.IDENTIFIER);
 
         if (current.getType() == TokenType.PERIOD)
-            return parseAccess(node);
+            return parseAccess(unit);
         else
-            return node;
+            return unit;
     }
 
-    private Instruction parseAccess(Node from) throws Exception { //должно возвращать сына Node у котого в execute будет кто-то из детей Variable
+    private Instruction parseAccess(Unit from) throws Exception { //должно возвращать сына Node у котого в run будет кто-то из детей Variable
         accept(TokenType.PERIOD);
-        Node identifier = parseEmdedVarOrEmbededFunctionCall(from);
+        Unit identifier = parseEmdedVarOrEmbededFunctionCall(from);
 
         Instruction fromAccess = new Access(from, identifier);
         return fromAccess;
     }
 
-    private Node parseEmdedVarOrEmbededFunctionCall(Node from) throws Exception {
+    private Unit parseEmdedVarOrEmbededFunctionCall(Unit from) throws Exception {
         Identifier identifier = new Identifier(current.getValue());
-        Node node = identifier;
-        accept(TokenType.BALANCE, TokenType.BANK, TokenType.FIND_WINNER,TokenType.GAME_TYPE, TokenType.GAME_TYPE,
-                TokenType.END_GAME, TokenType.JOIN_GAME, TokenType.LEAVE_GAME,
+        Unit unit = identifier;
+        accept(TokenType.BALANCE, TokenType.BANK, TokenType.FIND_WINNER,TokenType.GAME_TYPE, TokenType.PLAYER_TYPE,
+                TokenType.PLAYER_COUNT, TokenType.NEXT_ROUND,
+                TokenType.NEXT_ROUND, TokenType.JOIN_GAME, TokenType.LEAVE_GAME,
                 TokenType.NAME, TokenType.START_GAME, TokenType.STATUS, TokenType.WINER);
         if(current.getType() == TokenType.OPEN_BRACE){
-            node = new EmbededFunctionCall(parseFunctionCallArguments(),(Identifier) from, identifier);
-            return node;
+            unit = new EmbededFunctionCall(parseFunctionCallArguments(),(Identifier) from, identifier);
+            return unit;
         }
-        return node;
+        return unit;
 
     }
 
-    private List<Node> parseFunctionCallArguments() throws Exception {
-        ArrayList<Node> args = new ArrayList<>();
+    private List<Unit> parseFunctionCallArguments() throws Exception {
+        ArrayList<Unit> args = new ArrayList<>();
         accept(TokenType.OPEN_BRACE);
         while (current.getType() != TokenType.EOF) {
-            Node arg;
+            Unit arg;
             if (current.getType() == TokenType.CLOSED_BRACE) {
                 accept(TokenType.CLOSED_BRACE);
                 return args;
@@ -345,7 +341,7 @@ public class Parser {
         return false;
     }
 
-    private Node parseConstValue() throws Exception {
+    private Unit parseConstValue() throws Exception {
         switch (current.getType()){
             case CONST_INT:
                 String value = current.getValue();
@@ -364,16 +360,16 @@ public class Parser {
         }
     }
 
-    private Node parseLogicalExpression() throws Exception {
-        Node node = parseRelationExpression();
+    private Unit parseLogicalExpression() throws Exception {
+        Unit unit = parseRelationExpression();
 
         while (isAcceptable(TokenType.AND, TokenType.OR)) {
             TokenType type = current.getType();
             accept(TokenType.AND, TokenType.OR);
-            node = new Expression(node, type, parseRelationExpression());
+            unit = new Expression(unit, type, parseRelationExpression());
         }
 
-        return node;
+        return unit;
     }
 
     private Program parseInstructionBlock() throws Exception {
@@ -392,8 +388,8 @@ public class Parser {
 
     private String createErrorMessage(final TokenType... types) {
         StringBuilder stringBuilder = new StringBuilder()
-                .append("Error: ")
-                .append("Unexpected token: ");
+                .append("Error: ").append("Unexpected token: ").append(current.getValue())
+                .append(" in line: ").append(lexer.getLineNumber()).append(" in column: ").append(lexer.getColNumber());
 
         for (final TokenType tokenType : types) {
             stringBuilder.append(tokenType);

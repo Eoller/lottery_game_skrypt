@@ -1,14 +1,13 @@
 package ast.constvar;
 
-import ast.var.StringVariable;
+import ast.var.StringVar;
 import ast.var.Variable;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 /**
- * Created by Eoller on 04-Jun-18.
+ * Created by Yahor_Melnik on 10-May-18.
  */
 @NoArgsConstructor
 @Getter
@@ -22,7 +21,7 @@ public class ConstString extends ConstValue {
     }
 
     @Override
-    public Variable execute() {
-        return new StringVariable(value);
+    public Variable run() {
+        return new StringVar(value);
     }
 }

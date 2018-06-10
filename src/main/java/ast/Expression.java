@@ -1,25 +1,23 @@
 package ast;
 
 
-import ast.var.BoolVariable;
-import ast.var.IntegerVariable;
+import ast.var.BoolVar;
+import ast.var.IntegerVar;
 import ast.var.Variable;
 import lombok.Getter;
-import model.CommonOperations;
+import model.VarOperations;
 import model.TokenType;
 
-// expression = T {logicalOperator T}
-// T = T2 {relationalOperator T2}
-// T2 = T3 {lowPriorityArithmeticOperator T3}
-// T3 = operand {highPriorityArithmeticOperator operand}
-// operand = identifier | constValue | functionCall | '(' expression ')'
+/**
+ * Created by Yahor_Melnik on 10-May-18.
+ */
 @Getter
-public class Expression extends Node {
-    private Node left;
+public class Expression extends Unit {
+    private Unit left;
     private TokenType operator;
-    private Node right;
+    private Unit right;
 
-    public Expression(Node left, TokenType operator, Node right) {
+    public Expression(Unit left, TokenType operator, Unit right) {
         if (left == null)
             throw new RuntimeException("Left side of an expression cannot be null");
 
@@ -35,14 +33,14 @@ public class Expression extends Node {
 
 
     @Override
-    public Variable execute() {
-        Variable leftRes = left.execute();
-        Variable rightRes = right.execute();
+    public Variable run() {
+        Variable leftRes = left.run();
+        Variable rightRes = right.run();
 
         switch (operator){
             case AND:
             case OR:
-                return handleLogicalExpression((BoolVariable) leftRes, (BoolVariable) rightRes);
+                return handleLogicalExpression((BoolVar) leftRes, (BoolVar) rightRes);
             case PLUS:
             case MINUS:
             case MULTIPLY:
@@ -63,24 +61,24 @@ public class Expression extends Node {
     private Variable handleArithmeticExpression(Variable leftResult, Variable rightResult) {
         switch (operator) {
             case PLUS:
-                return CommonOperations.add(leftResult, rightResult);
+                return VarOperations.add(leftResult, rightResult);
             case MINUS:
-                return CommonOperations.subtract((IntegerVariable)leftResult, (IntegerVariable) rightResult);
+                return VarOperations.subtract((IntegerVar)leftResult, (IntegerVar) rightResult);
             case MULTIPLY:
-                return CommonOperations.multiply((IntegerVariable)leftResult, (IntegerVariable)rightResult);
+                return VarOperations.multiply((IntegerVar)leftResult, (IntegerVar)rightResult);
             case DIVIDE:
-                return CommonOperations.divide((IntegerVariable)leftResult, (IntegerVariable)rightResult);
+                return VarOperations.divide((IntegerVar)leftResult, (IntegerVar)rightResult);
             default:
                 throw new RuntimeException("Unexpected operator in expression " + operator);
         }
     }
 
-    private Variable handleLogicalExpression(BoolVariable leftResult, BoolVariable rightResult) {
+    private Variable handleLogicalExpression(BoolVar leftResult, BoolVar rightResult) {
         switch (operator) {
             case AND:
-                return CommonOperations.and(leftResult, rightResult);
+                return VarOperations.and(leftResult, rightResult);
             case OR:
-                return CommonOperations.or(leftResult, rightResult);
+                return VarOperations.or(leftResult, rightResult);
             default:
                 throw new RuntimeException("Unexpected operator in expression " + operator);
         }
@@ -89,17 +87,17 @@ public class Expression extends Node {
     private Variable handleRelationalExpression(Comparable leftResult, Comparable rightResult) {
         switch (operator) {
             case LESS:
-                return CommonOperations.less(leftResult, rightResult);
+                return VarOperations.less(leftResult, rightResult);
             case LESS_EQUAL:
-                return CommonOperations.lessEqual(leftResult, rightResult);
+                return VarOperations.lessEqual(leftResult, rightResult);
             case EQUAL:
-                return CommonOperations.equal(leftResult, rightResult);
+                return VarOperations.equal(leftResult, rightResult);
             case NOT_EQUAL:
-                return CommonOperations.notEqual(leftResult, rightResult);
+                return VarOperations.notEqual(leftResult, rightResult);
             case GREATER:
-                return CommonOperations.greater(leftResult, rightResult);
+                return VarOperations.greater(leftResult, rightResult);
             case GREATER_EQUAL:
-                return CommonOperations.greaterEqual(leftResult, rightResult);
+                return VarOperations.greaterEqual(leftResult, rightResult);
             default:
                 throw new RuntimeException("Unexpected operator in expression " + operator);
         }

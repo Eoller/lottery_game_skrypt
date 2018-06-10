@@ -5,6 +5,7 @@ import ast.Program;
 import model.Token;
 import model.TokenType;
 import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 import parser.Parser;
 
@@ -23,25 +24,62 @@ public class TokenizerTest {
 
     private Tokenizer tokenizer;
 
-    @After
+    @Before
     public void afterTests(){
+        AppContext.variables.clear();
 //        file.delete();
     }
 
     @Test
     public void shouldGetGameToken(){
-        tokenizer = new Tokenizer(createFileWithString("Game game1;"));
+        tokenizer = new Tokenizer(createFileWithString("Game game1"));
         assertEquals(Tokenizer.embededWords.get("Game"), tokenizer.nextToken());
     }
 
 
     @Test
     public void shouldGetIdentifierToken(){
-        tokenizer = new Tokenizer(createFileWithString("game1;"));
+        tokenizer = new Tokenizer(createFileWithString("game1"));
         Token nextToken = tokenizer.nextToken();
         assertEquals(TokenType.IDENTIFIER, nextToken.getType());
         assertEquals("game1", nextToken.getValue());
     }
+
+
+    @Test
+    public void shouldGetIntToken(){
+        tokenizer = new Tokenizer(createFileWithString("int"));
+        Token nextToken = tokenizer.nextToken();
+        assertEquals(TokenType.INT_TYPE, nextToken.getType());
+        assertEquals("int", nextToken.getValue());
+    }
+
+    @Test
+    public void shouldGetBoolToken(){
+        tokenizer = new Tokenizer(createFileWithString("bool"));
+        Token nextToken = tokenizer.nextToken();
+        assertEquals(TokenType.BOOL_TYPE, nextToken.getType());
+        assertEquals("bool", nextToken.getValue());
+    }
+
+    @Test
+    public void shouldGetStartGameToken(){
+        tokenizer = new Tokenizer(createFileWithString("startGame"));
+        Token nextToken = tokenizer.nextToken();
+        assertEquals(TokenType.START_GAME, nextToken.getType());
+        assertEquals("startGame", nextToken.getValue());
+    }
+
+
+    @Test
+    public void shouldGetFindWinnerToken(){
+        tokenizer = new Tokenizer(createFileWithString("findWinner"));
+        Token nextToken = tokenizer.nextToken();
+        assertEquals(TokenType.FIND_WINNER, nextToken.getType());
+        assertEquals("findWinner", nextToken.getValue());
+    }
+
+
 
     @Test
     public void randomTest() throws Exception {
@@ -106,7 +144,7 @@ public class TokenizerTest {
 
     private File createFileWithString(String data) {
         try {
-            file = new File("Example.txt");
+            file = new File("Temp.txt");
             file.createNewFile();
             FileWriter writer = new FileWriter(file);
             writer.write(data);
@@ -147,5 +185,4 @@ public class TokenizerTest {
     }
 
 
-    //[QUESTION] ETO DOLZNY BYC RAZNYJE OBJEKTY TOKENOW, ILI ODNI I TE ZE
 }

@@ -1,11 +1,16 @@
 package ast;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by Eoller on 03-Jun-18.
+ * Created by Yahor_Melnik on 10-May-18.
  */
+@Getter
+@Setter
 public class Program {
 
     List<Instruction> instructionList = new ArrayList<>();
@@ -16,7 +21,7 @@ public class Program {
 
     public void executeProgram(){
         instructionList.forEach(instruction -> {
-            instruction.execute();
+            instruction.run();
         });
     }
 

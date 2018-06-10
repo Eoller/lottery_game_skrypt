@@ -1,26 +1,25 @@
 package ast;
 
-import ast.var.BoolVariable;
+import ast.var.BoolVar;
 import ast.var.Variable;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
 /**
- * Created by Eoller on 04-Jun-18.
+ * Created by Yahor_Melnik on 10-May-18.
  */
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
 public class If extends Instruction {
 
-    private Node expression;
+    private Unit expression;
     private Program body;
     private Else elseBlock;
 
     @Override
-    public Variable execute() {
-        boolean isTrueEx = ((BoolVariable) expression.execute()).getValue();
+    public Variable run() {
+        boolean isTrueEx = ((BoolVar) expression.run()).getValue();
         if(isTrueEx){
             body.executeProgram();
         }else if(elseBlock!=null){

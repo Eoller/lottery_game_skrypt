@@ -1,6 +1,6 @@
 package ast;
 
-import ast.var.IntegerVariable;
+import ast.var.IntegerVar;
 import ast.var.Variable;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -10,27 +10,29 @@ import lombok.Setter;
 import java.util.List;
 
 import static java.lang.Thread.sleep;
-
+/**
+ * Created by Yahor_Melnik on 10-May-18.
+ */
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 public class FunctionCall extends Instruction {
 
-    private List<Node> args;
+    private List<Unit> args;
     private Identifier identifier;
 
     @Override
-    public Variable execute() {
+    public Variable run() {
         switch (identifier.getName()) {
             case "print":
-                System.out.print(args.get(0).execute());
+                System.out.print(args.get(0).run());
                 break;
             case "println":
-                System.out.println(args.get(0).execute());
+                System.out.println(args.get(0).run());
                 break;
             case "wait":
-                IntegerVariable time = (IntegerVariable) args.get(0).execute();
+                IntegerVar time = (IntegerVar) args.get(0).run();
                 try {
                     sleep(time.getValue() * 1000);
                 } catch (InterruptedException e) {

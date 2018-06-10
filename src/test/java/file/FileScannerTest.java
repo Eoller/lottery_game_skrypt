@@ -18,8 +18,7 @@ public class FileScannerTest {
 
     @Before
     public void beforeTests() throws IOException {
-
-        file = new File("Example.txt");
+        file = new File("FileScannerTest.txt");
         file.createNewFile();
         FileWriter writer = new FileWriter(file);
         writer.write("Game game1;" + '\n' +"Player player;");
@@ -47,12 +46,6 @@ public class FileScannerTest {
         assertEquals(1, fileScanner.getColPos());
         assertEquals(1, fileScanner.getRowPos());
         assertEquals('G', fileScanner.showMeCurrentChar());
-        for(int i =0 ; i < 14; i++){
-            System.out.println((char) fileScanner.getNextChar());
-            System.out.println(fileScanner.getColPos());
-            System.out.println(fileScanner.getRowPos());
-        }
-
 
         /*assertEquals('G',fileScanner.getNextChar());
         assertEquals(1, fileScanner.getColPos());

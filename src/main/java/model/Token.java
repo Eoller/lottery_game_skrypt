@@ -1,10 +1,11 @@
 package model;
-
+/**
+ * Created by Yahor_Melnik on 03-Jun-18.
+ */
 public class Token {
 
     private TokenType tokenType;
     private String value;
-    //[QUESTION] DO I NEED POS.col, POS.row
 
     public Token() {
     }

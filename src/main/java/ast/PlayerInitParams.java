@@ -1,33 +1,34 @@
 package ast;
 
-import ast.var.IntegerVariable;
-import ast.var.PlayerVariable;
-import ast.var.StringVariable;
+import ast.var.IntegerVar;
+import ast.var.PlayerVar;
+import ast.var.StringVar;
 import ast.var.Variable;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import static ast.var.VariableType.STRING;
-
+/**
+ * Created by Yahor_Melnik on 10-May-18.
+ */
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class PlayerInitParams extends Node {
+public class PlayerInitParams extends Unit {
 
-    private Node playerName;
-    private Node balance;
+    private Unit playerName;
+    private Unit balance;
 
     @Override
-    public Variable execute() {
-        Variable plName = playerName.execute();
-        Variable bal = balance.execute();
+    public Variable run() {
+        Variable plName = playerName.run();
+        Variable bal = balance.run();
         try {
-            StringVariable playerVariable = (StringVariable) plName;
-            IntegerVariable playerBalance = (IntegerVariable) bal;
-            return new PlayerVariable(playerVariable.toString(), playerBalance.getValue());
+            StringVar playerVariable = (StringVar) plName;
+            IntegerVar playerBalance = (IntegerVar) bal;
+            return new PlayerVar(playerVariable.toString(), playerBalance.getValue());
         }catch (Exception e){
             throw new RuntimeException("Error. Bad argument in Player initialization");
         }

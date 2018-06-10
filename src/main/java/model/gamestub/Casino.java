@@ -1,22 +1,28 @@
 package model.gamestub;
 
-import ast.var.GameVariable;
-import ast.var.PlayerVariable;
+import ast.var.GameVar;
+import ast.var.PlayerVar;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.List;
-
+/**
+ * Created by Yahor_Melnik on 03-Jun-18.
+ */
+@Getter
+@Setter
 public abstract class Casino {
 
-    private static final List<Game> games = new ArrayList<>();
-    private static final List<Player> players = new ArrayList<>();
+    public static final List<Game> games = new ArrayList<>();
+    public static final List<Player> players = new ArrayList<>();
 
-    public static void addPlayer(PlayerVariable playerVariable, String id){
+    public static void addPlayer(PlayerVar playerVariable, String id){
         players.add(new Player(id, playerVariable.getPlayerName(), playerVariable.getBalance()));
         System.out.println("[CASINO LOG] Player " + id + " joined our Casino.");
     }
 
-    public static void addGame(GameVariable gameVariable, String id){
+    public static void addGame(GameVar gameVariable, String id){
         games.add(new Game(id));
         System.out.println("[CASINO LOG] Game " + id + " was created.");
     }
@@ -30,6 +36,14 @@ public abstract class Casino {
     public static void kickPlayerFromGame(String gameId, String playerId){
         games.get(findGameIndexByGameId(gameId)).kickPlayer(playerId);
         System.out.println("[CASINO LOG] Player " + playerId + " just leaved game(" + gameId + ")");
+    }
+
+    public static void nextRoundOnGameById(String gameId){
+        games.get(findGameIndexByGameId(gameId)).nextRound();
+    }
+
+    public static void findWinnerOnGameById(String gameId){
+        games.get(findGameIndexByGameId(gameId)).findWinner();
     }
 
     private static int findGameIndexByGameId(String gameId){

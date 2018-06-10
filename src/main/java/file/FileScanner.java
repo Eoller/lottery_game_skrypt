@@ -4,7 +4,9 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-
+/**
+ * Created by Yahor_Melnik on 03-Jun-18.
+ */
 public class FileScanner implements Scanner {
 
     private FileReader fileReader;
@@ -55,6 +57,16 @@ public class FileScanner implements Scanner {
 
     public boolean isFinished() {
         return ((int) current) == -1;
+    }
+
+    @Override
+    public int getLineNumber() {
+        return rowPos;
+    }
+
+    @Override
+    public int getColNumber() {
+        return colPos;
     }
 
     public int getColPos() {

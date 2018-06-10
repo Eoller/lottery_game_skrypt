@@ -1,5 +1,7 @@
 package ast;
-
-public abstract class Instruction extends Node {
+/**
+ * Created by Yahor_Melnik on 10-May-18.
+ */
+public abstract class Instruction extends Unit {
 
 }

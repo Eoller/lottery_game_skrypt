@@ -27,7 +27,7 @@ while(i < 10){
 Player player1(b, a)
 Player player2("Dmitry", 200)
 Player player3("Piotr", 500)
-Game game1(0,0,0)
+Game game1()
 
 print("game1 bank = ")
 println(game1.bank)
@@ -39,9 +39,19 @@ println(player1.balance)
 print("player1 name = ")
 println(player1.name)
 
-player1.joinGame(game1, 100)
+player1.joinGame(game1, 105)
 print("player1 balance = ")
 println(player1.balance)
+
+print("game1 bank = ")
+println(game1.bank)
+
+player2.joinGame(game1, 30)
+print("player2 balance = ")
+println(player2.balance)
+
+print("game1 bank = ")
+println(game1.bank)
 
 
 $

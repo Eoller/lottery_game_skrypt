@@ -8,7 +8,7 @@ import lombok.Setter;
 import model.AppContext;
 
 /**
- * Created by Eoller on 05-Jun-18.
+ * Created by Yahor_Melnik on 10-May-18.
  */
 @Getter
 @Setter
@@ -16,12 +16,12 @@ import model.AppContext;
 @NoArgsConstructor
 public class Assignment extends Instruction {
 
-    private Node expression;
+    private Unit expression;
     private Identifier identifier;
 
     @Override
-    public Variable execute() {
-        Variable result = expression.execute();
+    public Variable run() {
+        Variable result = expression.run();
         if(AppContext.containsVariable(identifier.getName())){
             AppContext.updateVariable(identifier.getName(), result);
         }else {

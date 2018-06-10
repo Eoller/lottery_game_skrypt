@@ -1,8 +1,7 @@
 package ast;
 
-import ast.var.GameVariable;
-import ast.var.IntegerVariable;
-import ast.var.PlayerVariable;
+import ast.var.IntegerVar;
+import ast.var.PlayerVar;
 import ast.var.Variable;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -10,56 +9,63 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import model.AppContext;
 import model.gamestub.Casino;
-import model.gamestub.Player;
 
 import java.util.List;
 
-import static ast.var.VariableType.GAME;
-import static ast.var.VariableType.PLAYER;
-
+/**
+ * Created by Yahor_Melnik on 10-May-18.
+ */
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class EmbededFunctionCall extends Node {
+public class EmbededFunctionCall extends Unit {
 
-    private List<Node> argumentList;
+    private List<Unit> argumentList;
     private Identifier identifier;
-    private Node from;
+    private Unit from;
 
-    /*identifier.from(argumentList)*/
 
     @Override
-    public Variable execute() {
+    public Variable run() {
         Identifier funName = (Identifier) from;
         String rightSideName = funName.getName();
-        Variable leftSideName = identifier.execute();
+        Variable leftSideName = identifier.run();
         switch (leftSideName.getType()){
             case GAME:
-                GameVariable gameVariable = (GameVariable) leftSideName;
                 switch (rightSideName){
                     case "nextRound":
+                        String gameLeftSideId = identifier.getName();
+                        Casino.nextRoundOnGameById(gameLeftSideId);
+                        AppContext.synchronizeContext();
                         break;
                     case "findWinner":
+                        String gameleft = identifier.getName();
+                        Casino.findWinnerOnGameById(gameleft);
+                        AppContext.synchronizeContext();
                         break;
                 }
+                break;
             case PLAYER:
-                PlayerVariable playerVariable = (PlayerVariable) leftSideName;
+                PlayerVar playerVariable = (PlayerVar) leftSideName;
                 switch (rightSideName){
                     case "joinGame":
                         String playerId = identifier.getName();
                         Identifier gameId = (Identifier) argumentList.get(0);
-                        IntegerVariable bet = (IntegerVariable) argumentList.get(1).execute();
+                        IntegerVar bet = (IntegerVar) argumentList.get(1).run();
                         Casino.addPlayerToGame(gameId.getName() ,playerId, bet.getValue());
-                        PlayerVariable playerAdded = (PlayerVariable) AppContext.getVariable(playerId);
-                        playerAdded.setBalance(playerAdded.getBalance() - bet.getValue());
+
+                        AppContext.synchronizeContext();
                         break;
                     case "leaveGame":
                         String playerIdk = identifier.getName();
                         Identifier gameIdk = (Identifier) argumentList.get(0);
                         Casino.kickPlayerFromGame(gameIdk.getName(), playerIdk);
+
+                        AppContext.synchronizeContext();
                         break;
                 }
+                break;
                 default:
         }
         return null;

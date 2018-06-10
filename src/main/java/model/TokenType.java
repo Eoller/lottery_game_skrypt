@@ -1,7 +1,7 @@
 package model;
 
 /**
- * Created by unity on 18.04.18.
+ * Created by Yahor_Melnik on 03-Jun-18.
  */
 public enum TokenType {
     INT_TYPE, BOOL_TYPE, STRING_TYPE, GAME_TYPE, PLAYER_TYPE,
@@ -25,7 +25,7 @@ public enum TokenType {
 
 
     //GRA
-    START_GAME, END_GAME, FIND_WINNER,
+    START_GAME, NEXT_ROUND, FIND_WINNER,
     STATUS, BANK, WINER, PLAYER_COUNT,
 
     //PLAYER
